@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import RegisterApi, LoginApi, VerifyTokenApi, ChangePasswordApiView
+from .views import (RegisterApi, LoginApi, VerifyTokenApi, ChangePasswordApiView,
+                    ResetPasswordApi, ConfirmResetPasswordApi)
 
 app_name = 'api-v1'
 
@@ -10,6 +11,15 @@ urlpatterns = [
 
     # password:
     path("password/change/", ChangePasswordApiView.as_view(), name="change_password"),
-    # path("reset-password/", ResetPasswordApi.as_view(), name="reset_password"),
-    # path("reset-password/confirm/<str:token>",ConfirmResetPasswordApi.as_view(),name="reset_password_confirm",),
+    path("password/reset/", ResetPasswordApi.as_view(), name="reset_password"),
+    path("password/reset/confirm/<str:token>", ConfirmResetPasswordApi.as_view(), name="reset_password_confirm",),
+
+    # account verify
+    # path('verify/send/'),
+    # path('verify/resend/'),
 ]
+
+# TODO:
+#   logout
+#   email verify & email verify resend
+

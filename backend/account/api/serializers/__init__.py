@@ -1,2 +1,2 @@
 from .register_serializer import RegisterSerializer
-from .pasword_serializers import ChangePasswordSerializer
+from .pasword_serializers import ChangePasswordSerializer, ResetPasswordSerializer, ConfirmResetPasswordSerializer

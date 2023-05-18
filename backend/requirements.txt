@@ -4,5 +4,9 @@ Pillow==9.5.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 
+
+# mail
+django-mail-templated==2.6.5
+
 # clean code
 flake8==6.0.0
