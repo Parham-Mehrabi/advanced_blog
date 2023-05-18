@@ -1,0 +1,1 @@
+a simple SPA using react + vite + react router dom
