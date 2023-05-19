@@ -18,8 +18,3 @@ urlpatterns = [
     path('verify/email/<str:token>', VerifyEmail.as_view(), name='verify_email'),
     path('verify/resend/', ResendVerifyEmail.as_view(), name='verify_email'),
 ]
-
-# TODO:
-#   logout
-#   email verify & email verify resend
-

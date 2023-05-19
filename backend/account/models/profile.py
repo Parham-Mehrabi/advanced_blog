@@ -13,7 +13,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=128, blank=True)
 
     description = models.CharField(max_length=128, blank=True)
-    image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True)    # TODO: config images
 
     def __str__(self):
         return self.user.email
