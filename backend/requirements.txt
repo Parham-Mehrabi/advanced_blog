@@ -10,3 +10,7 @@ django-mail-templated==2.6.5
 
 # clean code
 flake8==6.0.0
+
+
+# swagger & redoc
+drf-yasg[validation]
