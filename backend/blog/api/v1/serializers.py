@@ -25,7 +25,7 @@ class BlogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['author', 'category', 'title', 'context',
+        fields = ['id', 'author', 'category', 'title', 'context',
                   'image', 'status', 'created_date', 'last_update',
                   'blog_absolute_url', 'blog_relative_url']
         read_only_fields = ["author"]
