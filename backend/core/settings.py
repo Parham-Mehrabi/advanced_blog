@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +28,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # packages:
+    'rest_framework',
+    'rest_framework_simplejwt',
+    "mail_templated",
     # my apps:
     'account',
 ]
@@ -45,7 +51,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,3 +123,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # User
 AUTH_USER_MODEL = 'account.CustomUser'
 
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+# SMTP
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+if DEBUG:
+    EMAIL_USE_TLS = False
+    EMAIL_HOST = "smtp4dev"
+    EMAIL_HOST_USER = ""
+    EMAIL_HOST_PASSWORD = ""
+    EMAIL_PORT = 25
+else:
+    EMAIL_USE_TLS = False
+    EMAIL_HOST = "mail.parham-webdev.com"
+    EMAIL_HOST_USER = os.getenv('SMTP_USERNAME')
+    EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')
+    EMAIL_PORT = 587
