@@ -132,9 +132,15 @@ REST_FRAMEWORK = {
 
 # SMTP
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-EMAIL_USE_TLS = False
-EMAIL_HOST = "mail.parham-webdev.com"
-EMAIL_HOST_USER = os.getenv('SMTP_USERNAME')
-EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')
-EMAIL_PORT = 587
+if DEBUG:
+    EMAIL_USE_TLS = False
+    EMAIL_HOST = "smtp4dev"
+    EMAIL_HOST_USER = ""
+    EMAIL_HOST_PASSWORD = ""
+    EMAIL_PORT = 25
+else:
+    EMAIL_USE_TLS = False
+    EMAIL_HOST = "mail.parham-webdev.com"
+    EMAIL_HOST_USER = os.getenv('SMTP_USERNAME')
+    EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')
+    EMAIL_PORT = 587
