@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from blog.models import Article
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from account.models import Profile
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -10,9 +8,12 @@ class AuthorSerializer(serializers.ModelSerializer):
         this serializer purpose is to represent email and is_superuser with id in BlogSerializer
     """
 
+    email = serializers.CharField(source='user.email', read_only=True)
+    is_superuser = serializers.BooleanField(source='user.is_superuser', read_only=True)
+
     class Meta:
-        model = User
-        fields = ['id', 'email', 'is_superuser']
+        model = Profile
+        fields = ['id', 'email', 'is_superuser', 'first_name', 'last_name']
 
 
 class BlogSerializer(serializers.ModelSerializer):

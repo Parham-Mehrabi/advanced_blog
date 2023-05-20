@@ -21,11 +21,13 @@ class BlogViewSet(ModelViewSet):
     ordering = ["-last_update"]
     ordering_fields = ["is_complete", "created_date", 'last_update']
 
-    search_fields = ["title", "context", "author__email", 'category']
+    search_fields = ["title", "context", 'author__user__email',
+                     'author__first_name', 'author__last_name',
+                     'category__title']
 
     filterset_fields = {
         "context": ["in", "exact"],
-        "author__email": ["exact", "in"],
+        "author": ["exact", "in"],
         "created_date": ["lt", "gt"],
     }
 

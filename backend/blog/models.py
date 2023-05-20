@@ -1,16 +1,14 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from account.models import Profile
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-
-User = get_user_model()
 
 
 class Article(models.Model):
     """
         blog article's model
     """
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
 
     title = models.CharField(max_length=128, verbose_name=_("article's title"))
