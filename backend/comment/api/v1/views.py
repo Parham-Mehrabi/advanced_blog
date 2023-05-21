@@ -32,11 +32,20 @@ class ListCreateCommentApi(ListCreateAPIView):
         return super().initialize_request(request, *args, *kwargs)
 
     def get_queryset(self):
+        """
+            return comments with article with provided pk, return 404 if article with that pk not found
+        """
+
         article = self.article
         queryset = Comment.objects.filter(article=article)
         return queryset
 
+
+
     def perform_create(self, serializer):
+        """
+            create new comment for article with specific pk, return 404 if article with the pk not exist
+        """
         article = self.article
         profile = Profile.objects.get(user_id=self.request.user.id)
         comment = serializer.validated_data.get('comment')
@@ -45,6 +54,7 @@ class ListCreateCommentApi(ListCreateAPIView):
                                      title=title,
                                      comment=comment)
         obj.save()
+
 
 
 class LikeDislikeApiView(GenericAPIView):
