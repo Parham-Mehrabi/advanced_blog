@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from .serializers import LikeDislikeSerializer, ListCreateCommentSerializer
 from comment.models import LikeDislike, Comment
 from account.models import Profile
+from blog.models import Article
 
 
 class ListCreateCommentApi(ListCreateAPIView):
@@ -20,7 +21,8 @@ class ListCreateCommentApi(ListCreateAPIView):
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        queryset = Comment.objects.filter(article=pk)
+        article = get_object_or_404(Article, pk=pk)
+        queryset = Comment.objects.filter(article=article)
         return queryset
 
     def perform_create(self, serializer):
