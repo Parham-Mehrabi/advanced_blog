@@ -1,7 +1,15 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
-from comment.models import LikeDislike
+from comment.models import LikeDislike, Comment
 from account.models import Profile
+
+
+class ListCreateCommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        read_only_fields = ['author', 'article']
 
 
 class LikeDislikeSerializer(serializers.ModelSerializer):
