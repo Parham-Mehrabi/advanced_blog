@@ -13,7 +13,8 @@ from blog.models import Article
 
 class ListCreateCommentApi(ListCreateAPIView):
     """
-        list comments and let user create new comment if authenticated and verified
+        list comments for specific blog
+        and let user create new comment if authenticated and verified
     """
 
     serializer_class = ListCreateCommentSerializer
