@@ -5,7 +5,9 @@ from account.models import Profile
 
 
 class ListCreateCommentSerializer(serializers.ModelSerializer):
-
+    """
+        serializer for Create new Comment
+    """
     class Meta:
         model = Comment
         fields = '__all__'

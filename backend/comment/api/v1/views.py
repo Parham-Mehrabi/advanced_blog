@@ -15,22 +15,32 @@ class ListCreateCommentApi(ListCreateAPIView):
     """
         list comments and let user create new comment if authenticated and verified
     """
+
     serializer_class = ListCreateCommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsVerifiedOrReadOnly]
     authentication_classes = [rest_framework.authentication.BasicAuthentication]
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.article = None
+        self.pk = None
+
+    def initialize_request(self, request, *args, **kwargs):
+        self.pk = self.kwargs['pk']
+        self.article = get_object_or_404(Article, pk=self.pk)
+        return super().initialize_request(request, *args, *kwargs)
+
     def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        article = get_object_or_404(Article, pk=pk)
+        article = self.article
         queryset = Comment.objects.filter(article=article)
         return queryset
 
     def perform_create(self, serializer):
-        pk = self.kwargs.get('pk')
+        article = self.article
         profile = Profile.objects.get(user_id=self.request.user.id)
         comment = serializer.validated_data.get('comment')
         title = serializer.validated_data.get('title')
-        obj = Comment.objects.create(author=profile, article_id=pk,
+        obj = Comment.objects.create(author=profile, article=article,
                                      title=title,
                                      comment=comment)
         obj.save()
