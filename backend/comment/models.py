@@ -1,17 +1,36 @@
 from django.db import models
 from account.models import Profile
+from blog.models import Article
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL)
-
+    """
+        article's comments model
+    """
+    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     comment = models.TextField(max_length=1024)
-
-    like = models.IntegerField(default=0)
-    dislike = models.IntegerField(default=0)
 
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return f'{self.author}: {self.article}'
+
+
+class Like(models.Model):
+    """
+        Comment's likes and dislike model
+    """
+    LikeOrDislike = {
+        ('0', 'Dislike'),
+        ('1', 'Like'),
+    }
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    vote = models.CharField(max_length=1, choices=LikeOrDislike)
+
+    def __str__(self):
+        return f'{self.profile}: {self.vote}'
+
