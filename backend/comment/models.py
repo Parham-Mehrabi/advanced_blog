@@ -18,19 +18,20 @@ class Comment(models.Model):
         return f'{self.author}: {self.article}'
 
 
-class Like(models.Model):
+class LikeDislike(models.Model):
     """
         Comment's likes and dislike model
     """
     LikeOrDislike = {
-        ('0', 'Dislike'),
-        ('1', 'Like'),
+        (0, 'Dislike'),
+        (1, 'Like'),
     }
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-    vote = models.CharField(max_length=1, choices=LikeOrDislike)
+    vote = models.IntegerField(max_length=1, choices=LikeOrDislike)
 
     def __str__(self):
-        return f'{self.profile}: {self.vote}'
-
+        if self.vote:
+            return f'{self.profile}: liked {self.comment.title}'
+        return f'{self.profile}: disliked {self.comment.title}'
