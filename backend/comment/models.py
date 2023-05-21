@@ -33,5 +33,5 @@ class LikeDislike(models.Model):
 
     def __str__(self):
         if self.vote:
-            return f'{self.profile}: liked {self.comment.title}'
-        return f'{self.profile}: disliked {self.comment.title}'
+            return f'{self.id}-{self.profile}: liked {self.comment.title}'
+        return f'{self.id}-{self.profile}: disliked {self.comment.title}'
