@@ -1,14 +1,12 @@
 from mail_templated import EmailMessage
 from django.conf import settings
+from celery import shared_task
 
 
+@shared_task
 def send_password_reset_token(email, user, token):
     """
     send {token} to {user}'s {email}
-    :param email:
-    :param user:
-    :param token:
-    :return:
     """
     if settings.DEBUG:
         email = EmailMessage(
@@ -29,6 +27,7 @@ def send_password_reset_token(email, user, token):
         email.send()
 
 
+@shared_task
 def send_email_verification(email, token):
     if settings.DEBUG:
         email = EmailMessage(
@@ -46,7 +45,3 @@ def send_email_verification(email, token):
             to=[email],
         )
         email.send()
-
-
-# TODO: handle it using celery
-

@@ -5,12 +5,16 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from .permissions import IsVerifiedOrReadOnly
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from .serializers import LikeDislikeSerializer, ListCreateCommentSerializer
 from comment.models import LikeDislike, Comment
 from account.models import Profile
 from blog.models import Article
+from comment.api.v1.paginators import CommentPaginator
 
 
+@method_decorator(cache_page(20 * 60, key_prefix='comments'), name='get')
 class ListCreateCommentApi(ListCreateAPIView):
     """
         list comments for specific blog
@@ -20,6 +24,7 @@ class ListCreateCommentApi(ListCreateAPIView):
     serializer_class = ListCreateCommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsVerifiedOrReadOnly]
     authentication_classes = [rest_framework.authentication.BasicAuthentication]
+    pagination_class = CommentPaginator
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -40,8 +45,6 @@ class ListCreateCommentApi(ListCreateAPIView):
         queryset = Comment.objects.filter(article=article)
         return queryset
 
-
-
     def perform_create(self, serializer):
         """
             create new comment for article with specific pk, return 404 if article with the pk not exist
@@ -54,7 +57,6 @@ class ListCreateCommentApi(ListCreateAPIView):
                                      title=title,
                                      comment=comment)
         obj.save()
-
 
 
 class LikeDislikeApiView(GenericAPIView):

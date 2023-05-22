@@ -9,13 +9,20 @@ django-filter==23.2
 # mail
 django-mail-templated==2.6.5
 
+
+# background process:
+celery==5.2.7
+
+# redis (broker & cache):
+django-redis==5.2.0
+
+
 # clean code
 flake8==6.0.0
 
 
 # swagger & redoc
 drf-yasg[validation]
-
 
 # add fake data to database
 Faker==18.9.0

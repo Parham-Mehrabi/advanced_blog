@@ -1,8 +1,5 @@
-import random
 from django.core.management.base import BaseCommand
 from faker import Faker
-from blog.models import Article
-from account.models import Profile
 from blog.models import Category
 
 
@@ -19,4 +16,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for _ in range(10):
-            Category.objects.create(title=self.faker)
+            Category.objects.create(title=self.faker.paragraph(nb_sentences=1))

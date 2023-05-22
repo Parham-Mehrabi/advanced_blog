@@ -36,7 +36,8 @@ class RegisterApi(GenericAPIView):
         }
         user = User.objects.get(email=email)
         token = get_token_for_user(user=user)
-        send_email_verification(email=email, token=token)
+        send_email_verification.delay(email=email, token=token)
+
         return Response(data)
 
 
@@ -92,7 +93,7 @@ class ResetPasswordApi(GenericAPIView):
         email = serializer.validated_data["email"]
         token = serializer.validated_data["token"]
         user = serializer.validated_data["user"]
-        send_password_reset_token(email=email, user=user, token=token)
+        send_password_reset_token.delay(email=email, user=user, token=token)
         return Response({"success": "password rest link has been sent to your email"})
 
 
@@ -177,7 +178,7 @@ class ResendVerifyEmail(GenericAPIView):
         user = serializer.validated_data["user"]
         email = serializer.validated_data["email"]
         token = get_token_for_user(user=user)
-        send_email_verification(email=email, token=token)
+        send_email_verification.delay(email=email, token=token)
         return Response(
             {"details": "user activation resend successfully"}, status.HTTP_200_OK
         )
