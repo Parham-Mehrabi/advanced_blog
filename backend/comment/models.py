@@ -29,7 +29,7 @@ class LikeDislike(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-    vote = models.SmallIntegerField(max_length=1, choices=LikeOrDislike)
+    vote = models.SmallIntegerField(choices=LikeOrDislike)
 
     def __str__(self):
         if self.vote:

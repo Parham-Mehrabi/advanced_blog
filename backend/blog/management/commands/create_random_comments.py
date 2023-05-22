@@ -22,8 +22,7 @@ class Command(BaseCommand):
         for profile in profiles:
             for blog in blogs:
                 for _ in range(5):
-                    comment = Comment.objects.create(author=profile,
-                                                     article=blog,
-                                                     title=self.faker.paragraph(nb_sentences=1),
-                                                     comment=self.faker.paragraph(nb_sentences=5))
-                    comment.save()
+                    Comment.objects.create(author=profile,
+                                           article=blog,
+                                           title=self.faker.paragraph(nb_sentences=1),
+                                           comment=self.faker.paragraph(nb_sentences=5))
