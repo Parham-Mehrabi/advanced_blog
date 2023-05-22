@@ -15,3 +15,7 @@ flake8==6.0.0
 
 # swagger & redoc
 drf-yasg[validation]
+
+
+# add fake data to database
+Faker==18.9.0

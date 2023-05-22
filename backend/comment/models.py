@@ -10,7 +10,7 @@ class Comment(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
-    comment = models.TextField(max_length=1024)
+    comment = models.TextField(max_length=1024)     # TODO: rename this field to body
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -29,7 +29,7 @@ class LikeDislike(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-    vote = models.IntegerField(max_length=1, choices=LikeOrDislike)
+    vote = models.SmallIntegerField(max_length=1, choices=LikeOrDislike)
 
     def __str__(self):
         if self.vote:
