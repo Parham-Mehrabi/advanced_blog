@@ -10,7 +10,7 @@ class Comment(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
-    comment = models.TextField(max_length=1024)
+    comment = models.TextField(max_length=1024)     # TODO: rename this field to body
 
     created = models.DateTimeField(auto_now_add=True)
 
