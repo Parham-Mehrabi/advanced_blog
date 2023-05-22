@@ -19,4 +19,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for _ in range(10):
-            Category.objects.create(title=self.faker)
+            Category.objects.create(title=self.faker.paragraph(nb_sentences=1))
