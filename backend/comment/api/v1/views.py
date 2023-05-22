@@ -9,6 +9,7 @@ from .serializers import LikeDislikeSerializer, ListCreateCommentSerializer
 from comment.models import LikeDislike, Comment
 from account.models import Profile
 from blog.models import Article
+from comment.api.v1.paginators import CommentPaginator
 
 
 class ListCreateCommentApi(ListCreateAPIView):
@@ -20,6 +21,7 @@ class ListCreateCommentApi(ListCreateAPIView):
     serializer_class = ListCreateCommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsVerifiedOrReadOnly]
     authentication_classes = [rest_framework.authentication.BasicAuthentication]
+    pagination_class = CommentPaginator
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -40,8 +42,6 @@ class ListCreateCommentApi(ListCreateAPIView):
         queryset = Comment.objects.filter(article=article)
         return queryset
 
-
-
     def perform_create(self, serializer):
         """
             create new comment for article with specific pk, return 404 if article with the pk not exist
@@ -54,7 +54,6 @@ class ListCreateCommentApi(ListCreateAPIView):
                                      title=title,
                                      comment=comment)
         obj.save()
-
 
 
 class LikeDislikeApiView(GenericAPIView):
