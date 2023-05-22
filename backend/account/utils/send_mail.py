@@ -49,4 +49,3 @@ def send_email_verification(email, token):
 
 
 # TODO: handle it using celery
-
