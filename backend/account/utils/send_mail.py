@@ -2,10 +2,8 @@ from mail_templated import EmailMessage
 from django.conf import settings
 from celery import shared_task
 
-# test:
-from time import sleep
 
-# @shared_task
+@shared_task
 def send_password_reset_token(email, user, token):
     """
     send {token} to {user}'s {email}

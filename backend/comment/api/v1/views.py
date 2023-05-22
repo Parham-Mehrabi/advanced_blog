@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from .permissions import IsVerifiedOrReadOnly
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from .serializers import LikeDislikeSerializer, ListCreateCommentSerializer
 from comment.models import LikeDislike, Comment
 from account.models import Profile
@@ -12,6 +14,7 @@ from blog.models import Article
 from comment.api.v1.paginators import CommentPaginator
 
 
+@method_decorator(cache_page(20 * 60, key_prefix='comments'), name='get')
 class ListCreateCommentApi(ListCreateAPIView):
     """
         list comments for specific blog

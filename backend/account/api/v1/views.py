@@ -93,7 +93,7 @@ class ResetPasswordApi(GenericAPIView):
         email = serializer.validated_data["email"]
         token = serializer.validated_data["token"]
         user = serializer.validated_data["user"]
-        send_password_reset_token(email=email, user=user, token=token)
+        send_password_reset_token.delay(email=email, user=user, token=token)
         return Response({"success": "password rest link has been sent to your email"})
 
 
