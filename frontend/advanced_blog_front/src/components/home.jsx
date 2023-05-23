@@ -9,14 +9,19 @@ export default function Home() {
                         awesome ! ! !</p>
                 </div>
             </div>
-            <div className='text text-center p-1 m-1 border '>
-                <h2> Advanced Blog Django </h2>
+            <div className='text text-center p-1 m-2 border '>
+                <h2> Advanced Blog With Django </h2>
                 <p className='text-black-50'>
                     this is a Django-DRF project, you can find the source code here:
                     <small>
                         <a href="https://github.com/Parham-Mehrabi/advanced_blog" className=''>source code</a>
                     </small>
                 </p>
+                <p>
+                    you can create can choose an category too read the blogs but to create a new blog or rating comments,
+                    you need to verify your account using Email
+                </p>
+                <a href="" className='btn btn-outline-info text-black-50 w-75 p-3 m-5'>Categories</a>
             </div>
             <div>
                 <div className={'row gap-3 gap-md-0'}>
