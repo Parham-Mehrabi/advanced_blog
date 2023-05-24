@@ -6,8 +6,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from blog.models import Article, Category
 from blog.permissions import IsAuthorOrReadOnly, IsVerifiedOrReadOnly
 from blog.api.v1.serializers import BlogSerializer, CategorySerializer, CategoryDetailsSerializer
-from blog.api.v1.paginators import BlogPaginator
-from .permissions import IsStaffOrReadOnly
+from blog.api.v1.paginators import BlogPaginator, CategoryPaginator
+from blog.api.v1.permissions import IsStaffOrReadOnly
 
 
 class BlogViewSet(ModelViewSet):
@@ -48,6 +48,7 @@ class CategoryApiView(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     permission_classes = [IsStaffOrReadOnly]
+    pagination_class = CategoryPaginator
     lookup_field = 'pk'
 
     def get_serializer_class(self):

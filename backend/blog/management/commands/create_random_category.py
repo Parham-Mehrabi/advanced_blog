@@ -16,4 +16,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for _ in range(10):
-            Category.objects.create(title=self.faker.paragraph(nb_sentences=1))
+            while True:
+                try:
+                    Category.objects.create(title=self.faker.paragraph(nb_sentences=1))
+                    break
+                except Exception as e:
+                    # TODO change this exception
+                    pass
