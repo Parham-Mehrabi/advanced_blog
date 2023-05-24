@@ -60,7 +60,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['title', 'count', 'absolute_url']
+        fields = ['id', 'title', 'count', 'absolute_url']
         read_only_fields = ['count', 'absolute_url']
 
     def blog_count(self, obj):
@@ -83,7 +83,7 @@ class CategoryDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['title', 'count', 'blogs_link']
+        fields = ['id', 'title', 'count', 'blogs_link']
         read_only_fields = ['count', 'blogs_link']
 
     def blog_count(self, obj):
