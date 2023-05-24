@@ -3,13 +3,17 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from blog.models import Article
+from blog.models import Article, Category
 from blog.permissions import IsAuthorOrReadOnly, IsVerifiedOrReadOnly
-from blog.api.v1.serializers import BlogSerializer
+from blog.api.v1.serializers import BlogSerializer, CategorySerializer, CategoryDetailsSerializer
 from blog.api.v1.paginators import BlogPaginator
+from .permissions import IsStaffOrReadOnly
 
 
 class BlogViewSet(ModelViewSet):
+    """
+        a set of views which handles Articles end points
+    """
     model = Article
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly, IsVerifiedOrReadOnly]
@@ -29,7 +33,28 @@ class BlogViewSet(ModelViewSet):
         "context": ["in", "exact"],
         "author": ["exact", "in"],
         "created_date": ["lt", "gt"],
+        'category': ["exact"],
     }
 
     def get_queryset(self):
         return Article.objects.filter(status=True)
+
+
+class CategoryApiView(ModelViewSet):
+    """
+        a set of views which handles Category end points
+    """
+    model = Category
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+    permission_classes = [IsStaffOrReadOnly]
+    lookup_field = 'pk'
+
+    def get_serializer_class(self):
+        """
+            instead of overriding to_representation like BlogSerializer, here we declare a new serializer for retrieving
+        """
+        if self.action == 'retrieve':
+            return CategoryDetailsSerializer
+        return self.serializer_class
+

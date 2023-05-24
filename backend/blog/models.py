@@ -31,6 +31,7 @@ class Category(models.Model):
         category model for blog's articles
     """
     title = models.CharField(max_length=128)
+    # TODO: add count field to the model
 
     def __str__(self):
         return self.title
