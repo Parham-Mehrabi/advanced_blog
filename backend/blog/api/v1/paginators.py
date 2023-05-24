@@ -15,7 +15,7 @@ class BlogPaginator(PageNumberPagination):
                     "previous": self.get_previous_link(),
                 },
                 "page_size": self.page_size,
-                "total_tasks": self.page.paginator.count,
+                "total_blogs": self.page.paginator.count,
                 "total_pages": self.page.paginator.num_pages,
                 "results": data
             }
