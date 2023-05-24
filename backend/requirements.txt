@@ -26,3 +26,7 @@ drf-yasg[validation]
 
 # add fake data to database
 Faker==18.9.0
+
+
+# Development (TEST WITH REACT DEV SERVER)
+django-cors-headers

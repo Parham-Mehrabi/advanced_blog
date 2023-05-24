@@ -10,7 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8cj^$(+fay(r!18g!^*p@c0vc@-f!4q9q^jwilkqlq=n9rbdn6'
+SECRET_KEY = 'django-insecure-8cj^$(+fay(r!18g!^*p@c0vc@-f!4q9q^jwilkqlq=n9rbdn6'   # noqa
+# TODO: USE ENV VARIABLE FOR THIS
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -28,6 +29,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # TODO: remove cors configs after building react app:
+    "corsheaders",
+
     # packages:
     'rest_framework',
     'rest_framework_simplejwt',
@@ -40,9 +44,18 @@ INSTALLED_APPS = [
     'comment',
 ]
 
+
+# TODO REMOVE CORS CONFIG:
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"(.*)",
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # DEVELOP:
+    "corsheaders.middleware.CorsMiddleware",
+    # TODO: remove cors config after building react app
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
