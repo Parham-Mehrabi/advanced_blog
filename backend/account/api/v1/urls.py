@@ -1,13 +1,14 @@
 from django.urls import path
 from .views import (RegisterApi, LoginApi, VerifyTokenApi, ChangePasswordApiView,
                     ResetPasswordApi, ConfirmResetPasswordApi, VerifyEmail, ResendVerifyEmail)
-
+from rest_framework_simplejwt.views import TokenRefreshView
 app_name = 'api-v1'
 
 urlpatterns = [
     path('register/', RegisterApi.as_view(), name='register'),
     path('login/', LoginApi.as_view(), name='login'),
     path('token/verify/', VerifyTokenApi.as_view(), name='token_verify'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # password:
     path("password/change/", ChangePasswordApiView.as_view(), name="change_password"),
