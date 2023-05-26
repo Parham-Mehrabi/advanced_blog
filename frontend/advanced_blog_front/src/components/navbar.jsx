@@ -1,7 +1,8 @@
 import {NavLink} from "react-router-dom";
+import {useAuthStatus} from "../contexts/auth_status.jsx";
 
-
-export default function Navbar(){
+export default function Navbar() {
+    const {authStatus} = useAuthStatus()
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -22,21 +23,28 @@ export default function Navbar(){
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/blogs">blogs</NavLink>
                         </li>
-                        <li className="nav-item dropdown">
-                            {/* TODO: check if user is authenticated to change this poart */}
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                username
-                            </a>
-                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href="#">username details</a></li>
-                                <li><a className="dropdown-item" href="#">some more info here</a></li>
-                                <li>
-                                    <hr className="dropdown-divider"/>
-                                </li>
-                                <li><a className="dropdown-item" href="#">logout</a></li>
-                            </ul>
-                        </li>
+
+                        {authStatus ? (
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    username
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a className="dropdown-item" href="#">username details</a></li>
+                                    <li><a className="dropdown-item" href="#">some more info here</a></li>
+                                    <li>
+                                        <hr className="dropdown-divider"/>
+                                    </li>
+                                    <li><a className="dropdown-item" href="#">logout</a></li>
+                                </ul>
+                            </li>
+                        ) : (
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/login">login</NavLink>
+                            </li>
+                        )}
+
                     </ul>
                     <form className="d-flex">
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
