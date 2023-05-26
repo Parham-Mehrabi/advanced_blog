@@ -2,7 +2,8 @@ import {NavLink} from "react-router-dom";
 import {useAuthStatus} from "../contexts/auth_status.jsx";
 
 export default function Navbar() {
-    const {authStatus} = useAuthStatus()
+    const {authStatus, UserDetails} = useAuthStatus()
+    console.log('userdetails: ', UserDetails)
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -28,7 +29,10 @@ export default function Navbar() {
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    username
+                                    {UserDetails['profile']['first_name'] ? (<>
+                                        {UserDetails['profile']['first_name']} {UserDetails['profile']['last_name']} </>) : (
+                                        UserDetails['email'])
+                                    }
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a className="dropdown-item" href="#">username details</a></li>

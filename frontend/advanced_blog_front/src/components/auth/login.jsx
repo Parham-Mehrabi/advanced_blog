@@ -2,9 +2,10 @@ import {useContext, useState} from "react";
 import BaseUrl from "../../contexts/url_context.jsx";
 import Cookies from 'js-cookie';
 import {useAuthStatus} from "../../contexts/auth_status.jsx";
+
 export default function login() {
     const baseurl = useContext(BaseUrl)
-    const {updateAuthStatus} = useAuthStatus()
+    const {updateAuthStatus, updateUserDetails} = useAuthStatus()
     const login_url = baseurl + 'account/api/v1/login/'
     const [user, setUser] = useState({'email': '', 'password': ''})
 
@@ -30,6 +31,7 @@ export default function login() {
                 Cookies.set('Access_token', data['access'], { expires: expireAccess });
                 Cookies.set('Refresh_token', data['refresh'], { expires: expireRefresh });
                 updateAuthStatus(true)
+                updateUserDetails(data['user'])
             }else {
                 console.log(response.status)
             }

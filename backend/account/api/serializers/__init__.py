@@ -1,3 +1,4 @@
 from .register_serializer import RegisterSerializer, ActivationResendSerializer
 from .pasword_serializers import ChangePasswordSerializer, ResetPasswordSerializer, ConfirmResetPasswordSerializer
 from .token_obtain_serializer import LoginTokenSerializer
+from .verify_token_serializer import VerifyTokenSerializer
