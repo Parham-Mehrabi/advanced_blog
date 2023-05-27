@@ -1,4 +1,5 @@
 import '../styles/home_excuse.css'
+import {Link} from "react-router-dom";
 
 export default function Home() {
     return (
@@ -21,7 +22,7 @@ export default function Home() {
                     you can create can choose an category too read the blogs but to create a new blog or rating comments,
                     you need to verify your account using Email
                 </p>
-                <a href="" className='btn btn-outline-info text-black-50 w-75 p-3 m-5'>Categories</a>
+                <Link to="/Category" className='btn btn-outline-info text-black-50 w-75 p-3 m-5'>Categories</Link>
             </div>
             <div>
                 <div className={'row gap-3 gap-md-0'}>
