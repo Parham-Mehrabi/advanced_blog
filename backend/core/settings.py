@@ -1,23 +1,21 @@
-from pathlib import Path
 import os
-
+from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8cj^$(+fay(r!18g!^*p@c0vc@-f!4q9q^jwilkqlq=n9rbdn6'   # noqa
+SECRET_KEY = 'django-insecure-8cj^$(+fay(r!18g!^*p@c0vc@-f!4q9q^jwilkqlq=n9rbdn6'  # noqa
 # TODO: USE ENV VARIABLE FOR THIS
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -43,7 +41,6 @@ INSTALLED_APPS = [
     'blog',
     'comment',
 ]
-
 
 # TODO REMOVE CORS CONFIG:
 CORS_ALLOWED_ORIGIN_REGEXES = [
@@ -83,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -93,7 +89,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -113,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -125,7 +119,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -135,7 +128,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # User
 AUTH_USER_MODEL = 'account.CustomUser'
@@ -157,7 +149,6 @@ CACHES = {
         }
     }
 }
-
 
 # celery:
 CELERY_BROKER_URL = 'redis://redis:6379/2'
@@ -183,3 +174,13 @@ else:
     EMAIL_HOST_USER = os.getenv('SMTP_USERNAME')
     EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')
     EMAIL_PORT = 587
+
+# JWT:
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'UPDATE_LAST_LOGIN': True,
+    'TOKEN_OBTAIN_SERIALIZER': 'account.api.serializers.LoginTokenSerializer',
+    'TOKEN_VERIFY_SERIALIZER': 'account.api.serializers.VerifyTokenSerializer',
+}
+
