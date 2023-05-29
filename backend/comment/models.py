@@ -19,6 +19,7 @@ class Comment(models.Model):
 
 
 class LikeDislike(models.Model):
+
     """
         Comment's likes and dislike model
     """
