@@ -19,6 +19,7 @@ class Comment(models.Model):
 
 
 class LikeDislike(models.Model):
+
     """
         Comment's likes and dislike model
     """
@@ -33,5 +34,5 @@ class LikeDislike(models.Model):
 
     def __str__(self):
         if self.vote:
-            return f'{self.id}-{self.profile}: liked {self.comment.title}'
-        return f'{self.id}-{self.profile}: disliked {self.comment.title}'
+            return f'{self.id}-{self.profile}: liked {self.comment.title}({self.comment.id})'
+        return f'{self.id}-{self.profile}: disliked {self.comment.title}({self.comment.id})'

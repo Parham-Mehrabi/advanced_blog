@@ -1,8 +1,8 @@
 import rest_framework.authentication
-from rest_framework.generics import GenericAPIView, DestroyAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, DestroyAPIView, ListCreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from .permissions import IsVerifiedOrReadOnly
+from .permissions import IsVerifiedOrReadOnly, ReadOnly
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
@@ -25,6 +25,7 @@ class ListCreateCommentApi(ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsVerifiedOrReadOnly]
     authentication_classes = [rest_framework.authentication.BasicAuthentication]
     pagination_class = CommentPaginator
+    ordering = ["-created"]
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -83,3 +84,24 @@ class DislikeApiView(DestroyAPIView):
         pk = self.kwargs['pk']
         obj = get_object_or_404(LikeDislike, profile__user=self.request.user, pk=pk)
         return obj
+
+
+class ListVotesView(GenericAPIView):
+    permission_classes = [ReadOnly]
+
+    def get(self, request, pk, *args, **kwargs):
+        response = {'status': None}
+        data = LikeDislike.objects.filter(comment_id=pk)
+        likes = data.filter(vote=1).count()
+        dislikes = data.filter(vote=0).count()
+        if request.user and request.user.is_authenticated:
+            try:
+                like_status = data.get(profile__user=request.user).vote
+                response['status'] = like_status
+            except LikeDislike.DoesNotExist:
+                pass
+
+        for _ in data:
+            response['like'] = likes
+            response['dislike'] = dislikes
+        return Response(response)

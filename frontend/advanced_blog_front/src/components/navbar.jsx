@@ -1,7 +1,6 @@
 import {Link, NavLink} from "react-router-dom";
 import {useAuthStatus} from "../contexts/auth_status.jsx";
 import axios from "axios";
-import Cookies from "js-cookie";
 import {useContext, useState} from "react";
 import BaseUrl from "../contexts/url_context.jsx";
 
