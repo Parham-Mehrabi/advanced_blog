@@ -93,4 +93,4 @@ class CategoryDetailsSerializer(serializers.ModelSerializer):
     def get_blogs_link(self, obj):
         base_url = reverse_lazy('blog:api-v1:blog-list')
         search_params = f'?category={obj.pk}'
-        return base_url+search_params
+        return base_url + search_params

@@ -1,5 +1,5 @@
 import rest_framework.authentication
-from rest_framework.generics import GenericAPIView, DestroyAPIView, ListCreateAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView, DestroyAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .permissions import IsVerifiedOrReadOnly, ReadOnly

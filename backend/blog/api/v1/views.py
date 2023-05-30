@@ -58,4 +58,3 @@ class CategoryApiView(ModelViewSet):
         if self.action == 'retrieve':
             return CategoryDetailsSerializer
         return self.serializer_class
-

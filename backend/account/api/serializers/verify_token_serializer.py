@@ -24,4 +24,3 @@ class VerifyTokenSerializer(TokenVerifySerializer):
         user_details = LoginTokenSerializer.get_user_details(attrs, user=user)
         response['user'] = user_details
         return response
-

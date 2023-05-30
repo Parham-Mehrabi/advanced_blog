@@ -3,6 +3,7 @@ from django.urls import reverse
 from comment.models import Comment
 from django.db import transaction
 
+
 @pytest.mark.django_db
 class TestGetCommentsResponses:
     """
@@ -73,7 +74,6 @@ class TestPostCommentsResponses:
         assert response1.status_code == 400
         assert response2.status_code == 400
         assert response3.status_code == 400
-
 
     @transaction.atomic
     def test_post_new_comment_verified_valid_data_201(self, api_client, random_blog, verified_user):

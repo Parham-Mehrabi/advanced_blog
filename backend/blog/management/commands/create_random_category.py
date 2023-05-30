@@ -21,5 +21,6 @@ class Command(BaseCommand):
                     Category.objects.create(title=self.faker.paragraph(nb_sentences=1))
                     break
                 except Exception as e:
+                    print(e)
                     # TODO change this exception
                     pass
