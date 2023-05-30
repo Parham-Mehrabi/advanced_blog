@@ -6,6 +6,8 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 from account.models import Profile
 from blog.models import Article, Category
+from comment.models import Comment, LikeDislike
+
 User = get_user_model()
 fake = Faker()
 
@@ -47,9 +49,33 @@ def category0():
 
 
 @pytest.fixture
-def random_blog_id(user0, category0):
-    profile = Profile.objects.create(user=user0)
-    blog = Article.objects.create(author=profile, category=category0,
+def verified_profile(verified_user):
+    profile = Profile.objects.get(user=verified_user)
+    return profile
+
+
+@pytest.fixture
+def comment0(verified_profile, random_blog):
+    comment0 = Comment.objects.create(
+        author=verified_profile,
+        article=random_blog,
+        title=fake.word(),
+        comment=fake.paragraph()
+    )
+    return comment0
+
+
+@pytest.fixture
+def like_comment(verified_profile, comment0):
+    like = LikeDislike.objects.create(comment=comment0,
+                                      profile=verified_profile,
+                                      vote=1)
+    return like
+
+
+@pytest.fixture
+def random_blog(verified_profile, category0):
+    blog = Article.objects.create(author=verified_profile, category=category0,
                                   title=fake.word, context=fake.paragraph(),
                                   status=random.choice([True, False]))
-    return blog.id
+    return blog
