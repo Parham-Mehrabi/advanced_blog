@@ -45,4 +45,3 @@ def send_email_verification(email, token):
             to=[email],
         )
         email.send()
-

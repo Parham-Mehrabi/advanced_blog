@@ -8,7 +8,8 @@ class TestGetVotes:
         a viewer should be able to get comments' votes even if they are not authorized
     """
 
-    def test_comments_vote_unauthorized(self, api_client, comment0, like_comment):
+    def test_comments_vote_unauthorized_200(self, api_client, comment0, like_comment):
+        """ status should be null because unauthorized user cant like or dislike """
         url = reverse('comment:api-v1:list_like_dislike', kwargs={'pk': comment0.id})
         response = api_client.get(url)
         assert response.status_code == 200
@@ -17,6 +18,8 @@ class TestGetVotes:
         assert b'dislike' in response.content
 
     def test_comment_vote_authorized_200(self, api_client, comment0, like_comment, user0):
+        """ status should be null because user0 neither liked nor disliked the comment """
+
         url = reverse('comment:api-v1:list_like_dislike', kwargs={'pk': comment0.id})
         api_client.force_authenticate(user0)
         response = api_client.get(url)
@@ -26,6 +29,7 @@ class TestGetVotes:
         assert b'dislike' in response.content
 
     def test_comment_vote_authorized_liked_200(self, api_client, comment0, like_comment, verified_user):
+        """ status should be 1 because the user liked """
         url = reverse('comment:api-v1:list_like_dislike', kwargs={'pk': comment0.id})
         api_client.force_authenticate(verified_user)
         response = api_client.get(url)
