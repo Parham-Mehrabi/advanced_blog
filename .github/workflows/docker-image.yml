@@ -1,0 +1,24 @@
+name: PyTest and flake8
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup docker compose 
+      run: |
+        echo "$ENV_VARIABLES" > env_variables.env
+        docker compose up -d
+    - name: test flake8
+      run: docker compose exec backend sh -c "flake8"
+    - name : test pytest
+      run: docker compose exec backend sh -c "pytest ."
