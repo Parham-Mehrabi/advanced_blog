@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,10 +158,11 @@ CELERY_BROKER_URL = 'redis://redis:6379/2'
 
 CELERY_BEAT_SCHEDULE = {
     'delete_completed_tasks': {
-        'task': 'todo.tasks.clean_done_tasks',
-        'schedule': 10 * 60
+        'task': 'account.tasks.purge_users',
+        'schedule': crontab(hour='*/2'),
     }
 }
+
 
 # SMTP
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

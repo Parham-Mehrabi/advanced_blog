@@ -15,7 +15,8 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         ('AUTH', {'fields': ('email', 'password')}),
-        ('STATUS', {'fields': ("is_staff", "is_superuser", "is_active", "is_verified")})
+        ('STATUS', {'fields': ("is_staff", "is_superuser", "is_active", "is_verified")}),
+        ('created', {'fields': ('last_login',)})
     )
 
     add_fieldsets = (
