@@ -20,7 +20,7 @@ class Article(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.pk}: {self.title}'
+        return f'{self.id}: {self.title}'
 
     def get_absolute_api_url(self):
         return reverse("blog:api-v1:blog-detail", kwargs={"pk": self.pk})

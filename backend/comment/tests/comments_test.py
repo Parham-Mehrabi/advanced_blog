@@ -15,10 +15,10 @@ class TestGetCommentsResponses:
         response = api_client.get(url)
         assert response.status_code == 404
 
-    def test_get_comments_list_unauthorized_401(self, api_client, random_blog):
+    def test_get_comments_list_unauthorized_200(self, api_client, random_blog):
         url = reverse('comment:api-v1:list_create_comments', kwargs={'pk': random_blog.id})
         response = api_client.get(url)
-        assert response.status_code == 401
+        assert response.status_code == 200
 
     def test_get_comments_authorized_verified_200(self, api_client, random_blog, user0):
         url = reverse('comment:api-v1:list_create_comments', kwargs={'pk': random_blog.id})

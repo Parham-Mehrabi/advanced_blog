@@ -19,7 +19,6 @@ services:
     image: redis
     ports:
       - '6369:6379'
-
     restart: always
     command: 'redis-server --save --loglevel warning'
 
@@ -37,6 +36,25 @@ services:
     environment:
       - ServerOptions__HostName=smtp4dev
 
+  beat:
+    container_name: celery-beat
+    build: .
+    command: celery -A core beat --loglevel=debug --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    depends_on:
+      - backend
+      - redis
+    volumes:
+      - ./backend:/app
+
+  worker:
+    container_name: celery-worker
+    build: .
+    command: celery -A core worker -l INFO
+    depends_on:
+      - backend
+      - redis
+    volumes:
+      - ./backend:/app
 
 volumes:
   smtp4dev-data:

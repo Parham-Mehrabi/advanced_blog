@@ -7,6 +7,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from rest_framework.filters import OrderingFilter
 from .serializers import LikeDislikeSerializer, ListCreateCommentSerializer
 from comment.models import LikeDislike, Comment
 from account.models import Profile
@@ -24,6 +25,7 @@ class ListCreateCommentApi(ListCreateAPIView):
     serializer_class = ListCreateCommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsVerifiedOrReadOnly]
     authentication_classes = [rest_framework.authentication.BasicAuthentication]
+    filter_backends = [OrderingFilter]
     pagination_class = CommentPaginator
     ordering = ["-created"]
 

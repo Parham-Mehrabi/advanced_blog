@@ -12,6 +12,7 @@ django-mail-templated==2.6.5
 
 # background process:
 celery==5.2.7
+django-celery-beat
 
 # redis (broker & cache):
 django-redis==5.2.0

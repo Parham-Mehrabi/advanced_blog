@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "mail_templated",
     'drf_yasg',
     "django_filters",
+    'django_celery_beat',
+
     # my apps:
     'account',
     'blog',
