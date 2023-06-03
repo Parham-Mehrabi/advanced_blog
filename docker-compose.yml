@@ -2,6 +2,16 @@ version: '3.9'
 
 
 services:
+
+
+  psql:
+    container_name: blog_psql
+    image: postgres:15-alpine3.18
+    env_file:
+      - ./db.env
+    expose:
+      - 5432:5432
+
   backend:
     container_name: django
     build: .
@@ -9,10 +19,12 @@ services:
       - '8000:8000'
     env_file:
       - ./env_variables.env
+      - ./db.env
     volumes:
       - ./backend:/app
+    depends_on:
+      - psql
     command: python3 manage.py runserver 0.0.0.0:8000
-
 
   redis:
     container_name: blog-redis
@@ -36,15 +48,21 @@ services:
     environment:
       - ServerOptions__HostName=smtp4dev
 
+
   beat:
     container_name: celery-beat
     build: .
     command: celery -A core beat --loglevel=debug --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    restart: always
     depends_on:
       - backend
       - redis
+      - psql
     volumes:
       - ./backend:/app
+    env_file:
+      - ./db.env
+
 
   worker:
     container_name: celery-worker
@@ -53,8 +71,11 @@ services:
     depends_on:
       - backend
       - redis
+      - psql
     volumes:
       - ./backend:/app
+    env_file:
+      - ./db.env
 
 volumes:
   smtp4dev-data:
