@@ -6,7 +6,7 @@ export default function Home() {
         <>
             <div>
                 <div className="train">
-                    <p>dont judge me with the styles im not a front-end developer, but the <span>BackEnd</span> is
+                    <p>dont judge me with the styles im not a good front-end developer, but the <span>BackEnd</span> is
                         awesome ! ! !</p>
                 </div>
             </div>

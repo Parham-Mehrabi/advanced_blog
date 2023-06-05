@@ -15,7 +15,7 @@ def purge_users():
     """
     unverified_users = User.objects.filter(is_verified=False)
     for user in unverified_users:
-        if user.created < (timezone.now() + timedelta(days=2)):
+        if (user.created + timedelta(days=2)) < timezone.now():
             user.delete()
     return 'purge un verified users'
 

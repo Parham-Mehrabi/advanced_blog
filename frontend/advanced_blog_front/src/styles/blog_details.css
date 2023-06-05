@@ -1,0 +1,11 @@
+.blog {
+    flex: 2 1 900px;
+    max-height: 100vh;
+    overflow: auto;
+}
+
+.comments {
+    flex: 1 4 400px;
+    max-height: 100vh;
+    overflow: auto;
+}

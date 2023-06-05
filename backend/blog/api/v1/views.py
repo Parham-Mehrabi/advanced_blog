@@ -1,6 +1,5 @@
 import rest_framework.authentication
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from blog.models import Article, Category
@@ -16,14 +15,14 @@ class BlogViewSet(ModelViewSet):
     """
     model = Article
     serializer_class = BlogSerializer
-    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly, IsVerifiedOrReadOnly]
+    permission_classes = [IsAuthorOrReadOnly, IsVerifiedOrReadOnly]
 
     pagination_class = BlogPaginator
     authentication_classes = [rest_framework.authentication.BasicAuthentication]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
     ordering = ["-last_update"]
-    ordering_fields = ["is_complete", "created_date", 'last_update']
+    ordering_fields = ["created_date", 'last_update']
 
     search_fields = ["title", "context", 'author__user__email',
                      'author__first_name', 'author__last_name',

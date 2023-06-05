@@ -15,4 +15,4 @@ class IsVerifiedOrReadOnly(BasePermission):
         """
             grant permission if user is verified or readonly
         """
-        return bool(request.user.is_verified or request.method in SAFE_METHODS)
+        return bool((request.user.is_authenticated and request.user.is_verified) or request.method in SAFE_METHODS)

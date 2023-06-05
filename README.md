@@ -3,10 +3,10 @@ blog app using django
 
 <h2>TODO (backend): </h2>
 <ol>
-<li>add a new container for celery worker</li>
-<li>add a new container for celery beat (crontab)</li>
-<li>create tests for each endpoint</li>
-<li>add a new container for PSQL</li>
+<li><s>add a new container for celery worker</s></li>
+<li><s>add a new container for celery beat (crontab)</s></li>
+<li><s>create tests for each endpoint</s></li>
+<li><s>add a new container for PSQL</s></li>
 
 </ol>
 
@@ -14,7 +14,7 @@ blog app using django
 <ol>
 <li>remove smtp4dev container</li>
 <li>add a new docker compose file for stage phase</li>
-<li>add CI</li>
+<li><s>add CI</s></li>
 <li>create a reverse proxy on main server and define a new subdomain for this</li>
 <li>add CD</li>
 </ol>
@@ -27,6 +27,10 @@ blog app using django
 </ol>
 <hr>
 <small>
-im too lazy to use GitHub's project so I used this as a TODO sheet if you are checking this
+im too lazy to use GitHub's project, so I used this as a TODO sheet if you are checking this
 commit and you found this just ignore it
 </small>
+
+
+<hr>
+python3 manage.py create_random_users && python3 manage.py create_random_category && python3 manage.py create_random_blogs && python3 manage.py create_random_comments && python3 manage.py vote_comments 

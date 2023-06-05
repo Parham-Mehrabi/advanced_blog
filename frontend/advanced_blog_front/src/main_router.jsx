@@ -10,6 +10,8 @@ import Login from './components/auth/login.jsx'
 import {AuthStatusProvider} from "./contexts/auth_status.jsx";
 import LogOut from "./components/auth/logout.jsx";
 import Register from "./components/auth/register.jsx";
+import Blogs from './components/blogs/blogs.jsx'
+
 
 const router = createBrowserRouter(
         createRoutesFromElements(
@@ -28,6 +30,7 @@ const router = createBrowserRouter(
                 <Route path='/category' element={<Categories/>}>
                     <Route path={'/category/:id'} element={<CategoryDetails/>}/>
                 </Route>
+                <Route path='/blogs' element={<Blogs/>}/>
                 <Route path='*' element={<NotFound/>}/>
 
             </Route>

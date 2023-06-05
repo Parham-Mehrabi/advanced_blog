@@ -1,0 +1,44 @@
+.truncated-blog {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    position: relative;
+}
+
+.truncated-blog:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    background: linear-gradient(to bottom, transparent, rgba(13,202,240,0.05));
+}
+
+.train2 {
+    overflow: hidden;
+    width: 100%;
+    padding-top: 10px;
+    font-size: 18px;
+    color: #5a5e59;
+}
+
+.train2 p {
+    white-space: nowrap;
+    animation: marquee 15s linear infinite;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.train2 span {
+    font-weight: bolder;
+    color: rgba(255, 0, 0, 0.71);
+}

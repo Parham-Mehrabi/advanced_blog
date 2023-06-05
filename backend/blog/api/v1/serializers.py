@@ -50,7 +50,12 @@ class BlogSerializer(serializers.ModelSerializer):
             rep.pop("blog_absolute_url", None)
             rep.pop("blog_relative_url", None)
         else:
-            rep.pop("context", None)
+            max_length = 100
+            if rep["context"] and len(rep["context"]) > max_length:
+                context = rep.pop("context", None)
+                truncated_context = context[:max_length].rsplit(' ', 1)[0] + " . . . "
+                rep["context"] = truncated_context
+            rep['category_name'] = Category.objects.get(id=rep['category']).__str__()
         return rep
 
 
