@@ -18,8 +18,10 @@ jobs:
       run: |
         echo "$ENV_VARIABLES" > env_variables.env
         echo "$DB_ENV" > db.env
+        echo "$SECRET_SQL" > secret.sql
         docker compose up -d
     - name: test flake8
       run: docker compose exec backend sh -c "flake8"
     - name : test pytest
       run: docker compose exec backend sh -c "pytest ."
+

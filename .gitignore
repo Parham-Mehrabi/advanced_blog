@@ -133,3 +133,4 @@ env_variables.env
 db.env
 /backend/*/migrations/*
 /backend/*/migrations/__init__.py
+secret.sql

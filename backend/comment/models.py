@@ -23,10 +23,10 @@ class LikeDislike(models.Model):
     """
         Comment's likes and dislike model
     """
-    LikeOrDislike = {
+    LikeOrDislike = (
         (0, 'Dislike'),
         (1, 'Like'),
-    }
+    )
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
