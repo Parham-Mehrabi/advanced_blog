@@ -16,12 +16,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Setup docker compose 
       run: |
-        echo "$ENV_VARIABLES" > env_variables.env
-        echo "$DB_ENV" > db.env
-        echo "$SECRET_SQL" > secret.sql
-        docker compose up -d
+        echo "${{ secrets.ENV_VARIABLES }}" > env_variables.env
+        echo "${{ secrets.DB_ENV }}" > db.env
+        echo "${{ secrets.SECRET_SQL }}" > secret.sql
+        docker compose up --build -d
     - name: test flake8
-      run: docker compose exec backend sh -c "flake8"
+      run: docker compose exec backend sh -c "flake8 ."
     - name : test pytest
-      run: docker compose exec backend sh -c "pytest ."
+      run: docker compose exec backend sh -c "pytest -v ."
 
