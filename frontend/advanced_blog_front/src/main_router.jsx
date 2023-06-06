@@ -11,6 +11,7 @@ import {AuthStatusProvider} from "./contexts/auth_status.jsx";
 import LogOut from "./components/auth/logout.jsx";
 import Register from "./components/auth/register.jsx";
 import Blogs from './components/blogs/blogs.jsx'
+import BlogDetails from './components/blogs/blog_details.jsx'
 
 
 const router = createBrowserRouter(
@@ -28,9 +29,12 @@ const router = createBrowserRouter(
                 <Route path='/logout' element={<LogOut/>}/>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/category' element={<Categories/>}>
-                    <Route path={'/category/:id'} element={<CategoryDetails/>}/>
+                    <Route path={':id'} element={<CategoryDetails/>}/>
                 </Route>
-                <Route path='/blogs' element={<Blogs/>}/>
+                <Route path='/blogs' >
+                    <Route index element={<Blogs/>} />
+                    <Route path={':id'} element={<BlogDetails/>} />
+                </Route>
                 <Route path='*' element={<NotFound/>}/>
 
             </Route>

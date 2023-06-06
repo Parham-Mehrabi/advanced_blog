@@ -1,11 +1,18 @@
 .blog {
     flex: 2 1 900px;
-    max-height: 100vh;
+    max-height: 40vh;
     overflow: auto;
+    background-color: #fafafa;
 }
 
 .comments {
     flex: 1 4 400px;
-    max-height: 100vh;
+    max-height: 35vh;
     overflow: auto;
+}
+.comments > div  > div:nth-child(odd){
+    background-color: rgba(146, 152, 152, 0.38);
+}
+.comments > div  > div:nth-child(even){
+    background-color: rgba(244, 255, 255, 0.55);
 }

@@ -1,8 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Ref} from "react";
 import {NavLink} from "react-router-dom";
-import Category from "./category.jsx";
 import '../styles/category_detail.css'
 export default function CategoryDetails() {
     const {id} = useParams()

@@ -8,7 +8,6 @@ export default function Navbar() {
     const {authStatus, UserDetails} = useAuthStatus()
     const baseurl = useContext(BaseUrl)
     const [isSent, setIsSent] = useState(false)
-    console.log('userdetails: ', UserDetails)
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">

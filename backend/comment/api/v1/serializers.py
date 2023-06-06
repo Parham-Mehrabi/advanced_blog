@@ -2,6 +2,9 @@ from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from comment.models import LikeDislike, Comment
 from account.models import Profile
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class ListCreateCommentSerializer(serializers.ModelSerializer):
@@ -12,6 +15,27 @@ class ListCreateCommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
         read_only_fields = ['author', 'article']
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        request = self.context['request']
+        if request.method == 'GET':
+            votes = LikeDislike.objects.filter(comment=rep['id'])
+            rep['likes'] = votes.filter(vote=1).count()
+            rep['dislikes'] = votes.filter(vote=0).count()
+            if request.user and request.user.is_authenticated:
+                if len(votes.filter(profile__user=request.user)):
+                    rep['status'] = votes.filter(profile__user=request.user)[0].vote
+                else:
+                    rep['status'] = None
+            else:
+                rep['status'] = None
+            try:
+                rep['author_email'] = User.objects.get(id=rep['author']).__str__()
+            except User.DoesNotExist:
+                rep['author_email'] = 'deleted user'
+
+        return rep
 
 
 class LikeDislikeSerializer(serializers.ModelSerializer):
@@ -26,11 +50,12 @@ class LikeDislikeSerializer(serializers.ModelSerializer):
         """
             prevent users to like or dislike their own comments
         """
-        request = self.context.get('request')
-        user = request.user.id
-        author = attrs.get('comment').author.user.id
-        if user == author:
-            raise serializers.ValidationError({'error': 'you cant like or dislike your own comment'})
+        # request = self.context.get('request')
+        # user = request.user.id
+        # author = attrs.get('comment').author.user.id
+        # if user == author:
+        #     raise serializers.ValidationError({'error': 'you cant like or dislike your own comment'})
+        # LET THE USER LIKE OR DISLIKE HIS OWN COMMENT FOR NOW (just like instagram)
         return super().validate(attrs)
 
     def create(self, validated_data):

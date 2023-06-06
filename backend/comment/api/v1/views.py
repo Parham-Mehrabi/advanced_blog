@@ -15,7 +15,7 @@ from blog.models import Article
 from comment.api.v1.paginators import CommentPaginator
 
 
-@method_decorator(cache_page(20 * 60, key_prefix='comments'), name='get')
+# @method_decorator(cache_page(20 * 60, key_prefix='comments'), name='get')
 class ListCreateCommentApi(ListCreateAPIView):
     """
         list comments for specific blog
@@ -24,7 +24,6 @@ class ListCreateCommentApi(ListCreateAPIView):
 
     serializer_class = ListCreateCommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsVerifiedOrReadOnly]
-    authentication_classes = [rest_framework.authentication.BasicAuthentication]
     filter_backends = [OrderingFilter]
     pagination_class = CommentPaginator
     ordering = ["-created"]

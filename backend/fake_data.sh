@@ -1,0 +1,5 @@
+python3 manage.py create_random_users
+python3 manage.py create_random_category
+python3 manage.py create_random_blogs
+python3 manage.py create_random_comments
+python3 manage.py vote_comments

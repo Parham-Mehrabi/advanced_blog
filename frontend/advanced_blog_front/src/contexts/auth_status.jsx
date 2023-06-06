@@ -14,11 +14,14 @@ const AuthStatus = createContext({
 
 export const AuthStatusProvider = ({children}) => {
         const base_url = useContext(BaseUrl)
+        const [authStatus, setAuthStatus] = useState(false);
+        const [user, setUser] = useState({'user': 'anonymous'})
+        const [hasInterval, setHasInterval] = useState(false)
 
         function checkLogin() {
+            console.log('checked')
             if (Cookies.get('Access_token')) {
                 const check_url = base_url + 'account/api/v1/token/verify/'
-                console.log(check_url)
                 try {
                     const response = fetch(check_url, {
                         method: 'POST',
@@ -29,18 +32,26 @@ export const AuthStatusProvider = ({children}) => {
                     }).then(response => {
                         if (response.status === 200) {
                             response.json().then(data => {
-                                    updateAuthStatus(true)
+                                    console.log(user['user_id'])
+                                    console.log(data['user']['user_id'])
                                     updateUserDetails(data['user'])
+                                    updateAuthStatus(true)
                                 }
                             )
+                        } else {
+                            Cookies.remove('Access_token')
+                            updateAuthStatus(false)
+                            updateUserDetails({'user': 'anonymous'})
+                            checkLogin()
                         }
                     })
                 } catch (e) {
                     console.error(e)
                 }
-            } else if (Cookies.get('Refresh_token')) {
+            }
+            if (!(Cookies.get('Access_token')) && Cookies.get('Refresh_token')) {
+                console.log('second log')
                 const check_url = base_url + 'account/api/v1/token/verify/'
-                console.log(check_url)
                 try {
                     const response = fetch(check_url, {
                         method: 'POST',
@@ -54,18 +65,35 @@ export const AuthStatusProvider = ({children}) => {
                                     updateAuthStatus(true)
                                     updateUserDetails(data['user'])
                                     get_access_token(base_url, Cookies.get('Refresh_token'))
+
                                 }
                             )
+                        } else {
+                            updateAuthStatus(false)
+                            updateUserDetails({'user': 'anonymous'})
                         }
                     })
                 } catch (e) {
                     console.error(e)
                 }
+            } else if((!(Cookies.get('Access_token')) && !(Cookies.get('Refresh_token')))) {
+                updateAuthStatus(false)
+                updateUserDetails({'user': 'anonymous'})
+
             }
         }
-        useEffect(()=>checkLogin, [])
-        const [authStatus, setAuthStatus] = useState(false);
-        const [user, setUser] = useState({'user': 'anonymous'})
+
+        let id = null
+        useEffect(() => {
+            if (!hasInterval && authStatus) {
+                setHasInterval(true);
+                id = setInterval(checkLogin, 6000)
+            } else if (!authStatus && !hasInterval) {
+                checkLogin()
+                clearInterval(id)
+            }
+        }, [authStatus])
+
         const updateUserDetails = (userDetails) => {
             setUser(userDetails)
         };

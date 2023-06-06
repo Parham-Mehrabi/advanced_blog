@@ -25,7 +25,7 @@ export default function Category() {
                         </thead>
                         <tbody>
                         {Categories.map((category, index) => {
-                            return <tr onClick={()=>navigate(`${category.id}`)}>
+                            return <tr onClick={()=>navigate(`${category.id}`)} key={category.id}>
                                 <th scope="row">{((CurrentPage - 1) * 8) + (index + 1)}</th>
                                 <td>{category.title}</td>
                                 <td>{category.count}</td>

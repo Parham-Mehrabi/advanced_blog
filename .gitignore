@@ -134,3 +134,4 @@ db.env
 /backend/*/migrations/*
 /backend/*/migrations/__init__.py
 secret.sql
+/postgres
