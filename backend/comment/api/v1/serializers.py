@@ -1,5 +1,3 @@
-import time
-
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from comment.models import LikeDislike, Comment
