@@ -16,3 +16,8 @@
 .comments > div  > div:nth-child(even){
     background-color: rgba(244, 255, 255, 0.55);
 }
+
+.vertical_hr{
+    border-left: #b2abab thin solid;
+    height: 100%;
+}

@@ -1,3 +1,5 @@
+import time
+
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from comment.models import LikeDislike, Comment
@@ -68,9 +70,30 @@ class LikeDislikeSerializer(serializers.ModelSerializer):
         vote = validated_data['vote']
         try:
             new_comment = LikeDislike.objects.get(comment=comment, profile=profile)
-            new_comment.vote = vote
-            new_comment.save()
+
+            if new_comment.vote == vote:
+                """ check if user is removing its vote"""
+                new_comment.delete()
+                status = None
+
+            else:
+                """ check if user is changing its vote """
+                new_comment.vote = vote
+                new_comment.save()
+                status = vote
         except LikeDislike.DoesNotExist:
+            """ check if user is voting for the first time on this comment """
             new_comment = LikeDislike.objects.create(comment=comment, profile=profile, vote=vote)
+            status = vote
             new_comment.save()
-        return new_comment
+        return {'comment': new_comment, 'status': status}
+
+    def to_representation(self, instance):
+        votes = LikeDislike.objects.filter(comment=instance['comment'].comment.id)
+        data = {
+            'id': instance['comment'].id,
+            'likes': votes.filter(vote=1).count(),
+            'dislikes': votes.filter(vote=0).count(),
+            'status': instance['status']
+        }
+        return data

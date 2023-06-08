@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from "react";
 import BaseUrl from "../../contexts/url_context.jsx";
 import '../../styles/blogs.css'
 import LoadingBlogs from "../loadings/loading_blogs.jsx";
-
+import {useNavigate} from "react-router-dom";
 export default function Blogs() {
     const baseurl = useContext(BaseUrl)
     const [Blogs, setBlogs] = useState([])
@@ -14,10 +14,13 @@ export default function Blogs() {
     const [Ordering, setOrdering] = useState('-created_date')
     const [createdDateLt, setCreatedDateLt] = useState("");
     const [createdDateGt, setCreatedDateGt] = useState("");
+    const navigate = useNavigate();
+
     useEffect(() => getBlogs, [])
     useEffect(() => {
         getBlogs();
     }, [Ordering, createdDateLt, createdDateGt]);
+
     return (<>
             <div>
                 <div className="train2">
@@ -72,7 +75,7 @@ export default function Blogs() {
                                                 </div>
                                                 <div className='d-flex flex-column justify-center'>
                                                     <p className='text-black-50 text-center truncated-blog'>{blog['context']}</p>
-                                                    <button
+                                                    <button onClick={()=>navigate(`${blog['id']}`)}
                                                         className='small btn btn-sm btn-outline-primary center w-20 m-auto text-black'>read
                                                         more
                                                     </button>

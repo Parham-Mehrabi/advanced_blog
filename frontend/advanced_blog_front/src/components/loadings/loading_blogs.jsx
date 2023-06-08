@@ -4,8 +4,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 const LoadingBlogs = () => {
     return (<>
         {Array(4).fill({}).map((_, index) => {
-            return <>
-                <div className='col-12 col-md-5 bg-info bg-opacity-10 border p-1 m-1' key={index}>
+            return <div key={index}>
+                <div className='col-12 col-md-5 bg-info bg-opacity-10 border p-1 m-1'>
                     <Skeleton width='80%' height='1.5rem' className='mb-2'/>
                     <Skeleton width='50%' height='1rem' className='badge text-dark text-wrap'/>
                     <Skeleton width='100%' height='200px'/>
@@ -26,7 +26,7 @@ const LoadingBlogs = () => {
                         <Skeleton width='80%' height='0.75rem' className='mb-1'/>
                     </small>
                 </div>
-            </>
+            </div>
         })}
     </>)
 }

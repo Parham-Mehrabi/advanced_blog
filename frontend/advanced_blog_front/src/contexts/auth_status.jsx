@@ -19,7 +19,6 @@ export const AuthStatusProvider = ({children}) => {
         const [hasInterval, setHasInterval] = useState(false)
 
         function checkLogin() {
-            console.log('checked')
             if (Cookies.get('Access_token')) {
                 const check_url = base_url + 'account/api/v1/token/verify/'
                 try {
@@ -32,8 +31,6 @@ export const AuthStatusProvider = ({children}) => {
                     }).then(response => {
                         if (response.status === 200) {
                             response.json().then(data => {
-                                    console.log(user['user_id'])
-                                    console.log(data['user']['user_id'])
                                     updateUserDetails(data['user'])
                                     updateAuthStatus(true)
                                 }
@@ -50,7 +47,6 @@ export const AuthStatusProvider = ({children}) => {
                 }
             }
             if (!(Cookies.get('Access_token')) && Cookies.get('Refresh_token')) {
-                console.log('second log')
                 const check_url = base_url + 'account/api/v1/token/verify/'
                 try {
                     const response = fetch(check_url, {

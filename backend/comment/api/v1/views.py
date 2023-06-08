@@ -1,4 +1,3 @@
-import rest_framework.authentication
 from rest_framework.generics import GenericAPIView, DestroyAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -15,7 +14,7 @@ from blog.models import Article
 from comment.api.v1.paginators import CommentPaginator
 
 
-# @method_decorator(cache_page(20 * 60, key_prefix='comments'), name='get')
+@method_decorator(cache_page(20 * 60, key_prefix='comments'), name='get')
 class ListCreateCommentApi(ListCreateAPIView):
     """
         list comments for specific blog
@@ -72,7 +71,8 @@ class LikeDislikeApiView(GenericAPIView):
         serializer = LikeDislikeSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({'details': 'success'}, status=status.HTTP_200_OK)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class DislikeApiView(DestroyAPIView):
