@@ -14,7 +14,7 @@ from blog.models import Article
 from comment.api.v1.paginators import CommentPaginator
 
 
-@method_decorator(cache_page(20 * 60, key_prefix='comments'), name='get')
+@method_decorator(cache_page(10, key_prefix='comments'), name='get')
 class ListCreateCommentApi(ListCreateAPIView):
     """
         list comments for specific blog
