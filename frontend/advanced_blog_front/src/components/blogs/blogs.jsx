@@ -3,6 +3,7 @@ import BaseUrl from "../../contexts/url_context.jsx";
 import '../../styles/blogs.css'
 import LoadingBlogs from "../loadings/loading_blogs.jsx";
 import {useNavigate} from "react-router-dom";
+
 export default function Blogs() {
     const baseurl = useContext(BaseUrl)
     const [Blogs, setBlogs] = useState([])
@@ -16,7 +17,6 @@ export default function Blogs() {
     const [createdDateGt, setCreatedDateGt] = useState("");
     const navigate = useNavigate();
 
-    useEffect(() => getBlogs, [])
     useEffect(() => {
         getBlogs();
     }, [Ordering, createdDateLt, createdDateGt]);
@@ -52,50 +52,56 @@ export default function Blogs() {
                 </div>
             </div>
             {!loading ? (
-                    <>
-                        <div className='p-1 m-1'>
-                            <div className='row h-100 '>
-                                {Blogs.map(blog => {
-                                        const createdDate = new Date(blog['created_date']);
-                                        const updatedDate = new Date(blog['last_update'])
-                                        const formatted_created = createdDate.toLocaleDateString();
-                                        const formatted_updated = updatedDate.toLocaleDateString();
-                                        return (
-                                            <div className='col-12 col-md-5 bg-info bg-opacity-10 border p-1 m-1'>
-                                                <h5>{blog['title']}</h5>
-                                                <p className='badge text-dark text-wrap'>{blog['category_name']}</p>
-                                                <div>
-                                                    {/* TODO: change the backend to send a proper image if the blog has no image itself  */}
-                                                    {blog['image'] ? (
-                                                        <img src={blog['image']} alt=""/>
-                                                    ) : (
-                                                        <img width='100%' src='https://http.cat/404'
-                                                             alt='this blog has no image'/>
-                                                    )}
-                                                </div>
-                                                <div className='d-flex flex-column justify-center'>
-                                                    <p className='text-black-50 text-center truncated-blog'>{blog['context']}</p>
-                                                    <button onClick={()=>navigate(`${blog['id']}`)}
-                                                        className='small btn btn-sm btn-outline-primary center w-20 m-auto text-black'>read
-                                                        more
-                                                    </button>
-                                                </div>
 
-                                                <small className='p-0 m-0'>created : {formatted_created}</small> <br/>
-                                                <small className='p-0 m-0'>last update : {formatted_updated}</small>
-                                                <hr className='p-0 m-0'/>
-                                                <small className='p-0 m-0 text-wrap'>Author : {blog['author']['email']}
-                                                    {blog['author']['first_name'] || blog['author']['last_name'] ? (
-                                                        <>({blog['author']['first_name']} {blog['author']['last_name']})</>) : null}</small>
-                                                {/*    TODO: add a link to see the profile (after adding the profile pages)*/}
-                                            </div>
-                                        )
-                                    }
-                                )}
+                    Blogs[0] ? (
+                        <>
+                            <div className='p-1 m-1'>
+                                <div className='row h-100 '>
+                                    {Blogs.map(blog => {
+                                            const createdDate = new Date(blog['created_date']);
+                                            const updatedDate = new Date(blog['last_update'])
+                                            const formatted_created = createdDate.toLocaleDateString();
+                                            const formatted_updated = updatedDate.toLocaleDateString();
+                                            return (
+                                                <div className='col-12 col-md-5 bg-info bg-opacity-10 border p-1 m-1'>
+                                                    <h5>{blog['title']}</h5>
+                                                    <p className='badge text-dark text-wrap'>{blog['category_name']}</p>
+                                                    <div>
+                                                        {/* TODO: change the backend to send a proper image if the blog has no image itself  */}
+                                                        {blog['image'] ? (
+                                                            <img src={blog['image']} alt=""/>
+                                                        ) : (
+                                                            <img width='100%' src='https://http.cat/404'
+                                                                 alt='this blog has no image'/>
+                                                        )}
+                                                    </div>
+                                                    <div className='d-flex flex-column justify-center'>
+                                                        <p className='text-black-50 text-center truncated-blog'>{blog['context']}</p>
+                                                        <button onClick={() => navigate(`${blog['id']}`)}
+                                                                className='small btn btn-sm btn-outline-primary center w-20 m-auto text-black'>read
+                                                            more
+                                                        </button>
+                                                    </div>
+
+                                                    <small className='p-0 m-0'>created : {formatted_created}</small> <br/>
+                                                    <small className='p-0 m-0'>last update : {formatted_updated}</small>
+                                                    <hr className='p-0 m-0'/>
+                                                    <small className='p-0 m-0 text-wrap'>Author : {blog['author']['email']}
+                                                        {blog['author']['first_name'] || blog['author']['last_name'] ? (
+                                                            <>({blog['author']['first_name']} {blog['author']['last_name']})</>) : null}</small>
+                                                    {/*    TODO: add a link to see the profile (after adding the profile pages)*/}
+                                                </div>
+                                            )
+                                        }
+                                    )}
+                                </div>
                             </div>
-                        </div>
 
-                    </>
+                        </>
+                    ) : (
+                        <h1>there is no blog ! ! !</h1>
+                    )
+
                 )
                 :
                 (
@@ -143,13 +149,12 @@ export default function Blogs() {
     function getBlogs(page = 1, ordering = Ordering) {
         setLoading(true)
 
-        fetch(`${baseurl}blog/api/v1/blog/?page=${page}&ordering=${ordering}&created_date__gt=${createdDateGt}&created_date__lt=${createdDateLt}`).then(resp => resp.json()).then((data) => {
+        fetch(`${baseurl}blog/api/v1/blog/?page=${page}&&ordering=${ordering}&created_date__gt=${createdDateGt}&created_date__lt=${createdDateLt}`).then(resp => resp.json()).then((data) => {
             setLoading(false)
             setBlogs(data.results)
             setTotalPage(data.total_pages)
             setCurrentPage(page)
-        });
-
+        })
     }
 
     function handleOrderingChange(event) {

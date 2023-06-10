@@ -7,6 +7,7 @@ import axios from "axios";
 
 
 export default function login() {
+    const navigate = useNavigate()
     const baseurl = useContext(BaseUrl)
     const {updateAuthStatus, updateUserDetails, authStatus} = useAuthStatus()
     const login_url = baseurl + 'account/api/v1/login/'
@@ -79,7 +80,7 @@ function handleInputs(e) {
     setUser(myUser)
 }
 
-const navigate = useNavigate()
+
 return (
     authStatus ? (navigate('/')) : (
         <div className='d-flex justify-content-center flex-column w-75 content-center justify-center m-auto'>

@@ -1,5 +1,5 @@
 import '../../styles/blog_details.css'
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useContext, useEffect, useRef, useState} from "react";
 import BaseUrl from "../../contexts/url_context.jsx";
 import Cookies from "js-cookie";
@@ -7,9 +7,8 @@ import {useAuthStatus} from "../../contexts/auth_status.jsx";
 import {FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
 import {RiThumbUpLine, RiThumbDownLine} from 'react-icons/ri';
 
-
 export default function BlogDetails() {
-
+    const navigate = useNavigate()
     const CommentsDiv = useRef(null)
     const {authStatus} = useAuthStatus()
     const {id} = useParams()
@@ -23,7 +22,15 @@ export default function BlogDetails() {
     const [CommentsPage, setCommentsPage] = useState(1)
     const [CommentsMaxPage, setCommentsMaxPage] = useState()
 
-    useEffect(() => getBlog(id), [authStatus])
+
+    const [newComment, setNewComment] = useState({})
+    const [sendCommentAllowed, sendSentCommentAllowed] = useState(authStatus)
+    const [newCommentErrors, setNewCommentErrors] = useState(({
+        'title': '',
+        'comment': '',
+    }))
+
+    useEffect(() => getBlog(id), [])
     return (
         loading ? (
             <h1>LOADING</h1>
@@ -58,7 +65,7 @@ export default function BlogDetails() {
                                 return <div className='p-1 m-1 d-flex justify-content-between' key={comment.id}>
                                     <div>
                                         <h5>{comment['title']}</h5>
-                                        <p>{comment['comment']}</p>
+                                        <p className='text-break'>{comment['comment']}</p>
                                         <small>- {comment['author_email']}</small>
                                     </div>
                                     <div className='nowrap d-flex bg-inherit'>
@@ -88,24 +95,88 @@ export default function BlogDetails() {
                                     </div>
                                 </div>
                             })}
-                    {commentsFinished ? (<div className='p-1'>
-                        <h6 className='text text-center text-black-50'>there is no more comments for this blog</h6>
-                    </div>):(<div className='d-flex justify-center justify-content-center'>
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    )}
+                            {commentsFinished ? (<div className='p-1'>
+                                <h6 className='text text-center text-black-50'>there is no more comments for this
+                                    blog</h6>
+                            </div>) : (<div className='d-flex justify-center justify-content-center'>
+                                    <div className="spinner-border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
                 <hr/>
-                <form className='form'>
-                    <input className='input' type="text"/>
-                </form>
+                {authStatus ? (<form className='p-2 m-2 border' onSubmit={handlePostNewComment}>
+
+                    <div className='p-1 m-1'>
+                        <label htmlFor="title" className='form-label fw-bolder'>Title : </label>
+                        {newCommentErrors['title'][0] ? (
+                            <ul className=' p-1 alert alert-danger small'>
+                                {newCommentErrors['title'].map(e=><li>{e}</li>)}
+                            </ul>
+                        ) : null}
+                        <input className='text-bg-secondary w-50 rounded-1' maxLength={256} name='title' onChange={handleInputs}
+                               id='title' type="text"/>
+                    </div>
+                    <div className='p-1 m-1'>
+                        <label htmlFor="comment" className="form-label">Comment</label>
+                                                {newCommentErrors['comment'][0] ? (
+                            <ul className='p-1 alert alert-danger small'>
+                                {newCommentErrors['comment'].map(e=><li>{e}</li>)}
+                            </ul>
+                        ) : null}
+                        <textarea onChange={handleInputs} maxLength={512} name='comment' className="form-control text-bg-secondary"
+                                  id="comment" rows="5"></textarea>
+                    </div>
+                    <button type='submit' className='btn btn-info '>Send</button>
+                </form>) : <h6 onClick={() => {
+                    navigate('/login')
+                }} className='alert-danger alert text-center'>you need to <strong>login</strong> before you can post
+                    comment for this blog</h6>}
             </>
         )
     )
+
+    function handleInputs(e) {
+        const myInputs = e.currentTarget
+        const new_comment = {...newComment}
+        new_comment[myInputs.name] = myInputs.value
+        setNewComment(new_comment)
+        console.log(newCommentErrors)
+
+    }
+
+    function handlePostNewComment(e) {
+        e.preventDefault()
+        sendSentCommentAllowed(false)
+        let headers = {
+            'Authorization': `Bearer ${Cookies.get('Access_token')}`,
+            'Content-Type': 'application/json'
+        }
+        let body = JSON.stringify(newComment)
+        fetch(`${baseurl}comment/api/v1/comment/${id}`, {
+            method: 'POST',
+            body: body,
+            headers: headers,
+        }).then((resp) => {
+            if (resp.status === 201) {
+                alert('new comment added but i didnt create a ui for it yet refresh the page if u want to see it)')
+            } else if (resp.status === 400) {
+                resp.json().then(error => {
+                    setNewCommentErrors({
+                        'title': error['title'] || '',
+                        'comment': error['comment'] || '',
+                    })
+                })
+            } else {
+                console.log(resp.status)
+            }
+        })
+
+
+    }
 
     function getBlog(id) {
         let headers = authStatus ? ({'Authorization': `Bearer ${Cookies.get('Access_token')}`}) : {}
@@ -199,8 +270,6 @@ export default function BlogDetails() {
                             return [...perv, new_comment]
                         });
                     })
-
-
                 });
         } else {
             setCommentsFinished(true)
