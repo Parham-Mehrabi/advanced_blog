@@ -30,7 +30,7 @@ class BlogSerializer(serializers.ModelSerializer):
         fields = ['id', 'author', 'category', 'title', 'context',
                   'image', 'status', 'created_date', 'last_update',
                   'blog_absolute_url', 'blog_relative_url']
-        read_only_fields = ["author"]
+        read_only_fields = ["author", 'status']
 
     def get_relative_url(self, obj):
         """ create relative link for the object's details """
@@ -39,7 +39,7 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """ automatically add author from request """
-        validated_data["author"] = self.context.get("request").user
+        validated_data["author"] = Profile.objects.get(user=self.context.get("request").user)
         return super().create(validated_data)
 
     def to_representation(self, instance):
@@ -55,7 +55,10 @@ class BlogSerializer(serializers.ModelSerializer):
                 context = rep.pop("context", None)
                 truncated_context = context[:max_length].rsplit(' ', 1)[0] + " . . . "
                 rep["context"] = truncated_context
-            rep['category_name'] = Category.objects.get(id=rep['category']).__str__()
+            try:
+                rep['category_name'] = Category.objects.get(id=rep['category']).__str__()
+            except Category.DoesNotExist:
+                rep['category_name'] = None
         return rep
 
 
