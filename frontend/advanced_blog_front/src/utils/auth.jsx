@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 
 export default async function get_access_token(base_url, refresh_token) {
-    console.log('refresh token ', refresh_token)
     const refresh_url = base_url + 'account/api/v1/token/refresh/'
     const response = await fetch(refresh_url, {
         method: 'POST',
