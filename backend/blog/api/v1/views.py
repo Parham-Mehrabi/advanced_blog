@@ -1,4 +1,3 @@
-import rest_framework.authentication
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -18,7 +17,6 @@ class BlogViewSet(ModelViewSet):
     permission_classes = [IsAuthorOrReadOnly, IsVerifiedOrReadOnly]
 
     pagination_class = BlogPaginator
-    authentication_classes = [rest_framework.authentication.BasicAuthentication]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
     ordering = ["-last_update"]
