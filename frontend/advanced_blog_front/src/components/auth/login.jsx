@@ -15,7 +15,7 @@ export default function login() {
     const [errors, setErrors] = useState({
         'email': '',
         'password': '',
-        'details': '',
+        'detail': '',
     })
     const [isLoading, setIsLoading] = useState(false)
 
@@ -53,12 +53,12 @@ export default function login() {
                 setErrors({
                     'email': '',
                     'password': '',
-                    'details': '',
+                    'detail': '',
                 })
                 setErrors({
                     'email': error.response.data['email'] || '',
                     'password': error.response.data['password'] || '',
-                    'details': error.response.data['details'] || '',
+                    'detail': error.response.data['details'] || '',
                 })
                 setIsLoading(false)
             } else if (error.message === 'Network Error') {
@@ -66,7 +66,7 @@ export default function login() {
                 setErrors({
                     'email': '',
                     'password': '',
-                    'details': '',
+                    'detail': '',
                 })
                 setIsLoading(false)
             }
@@ -82,6 +82,7 @@ function handleInputs(e) {
 
 
 return (
+    // TODO: handle errors in jsx
     authStatus ? (navigate('/')) : (
         <div className='d-flex justify-content-center flex-column w-75 content-center justify-center m-auto'>
             <form onSubmit={performLogin}>

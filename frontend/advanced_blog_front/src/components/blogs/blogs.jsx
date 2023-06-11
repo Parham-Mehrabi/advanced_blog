@@ -3,6 +3,9 @@ import BaseUrl from "../../contexts/url_context.jsx";
 import '../../styles/blogs.css'
 import LoadingBlogs from "../loadings/loading_blogs.jsx";
 import {useNavigate} from "react-router-dom";
+import {useAuthStatus} from "../../contexts/auth_status.jsx";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function Blogs() {
     const baseurl = useContext(BaseUrl)
@@ -16,6 +19,16 @@ export default function Blogs() {
     const [createdDateLt, setCreatedDateLt] = useState("");
     const [createdDateGt, setCreatedDateGt] = useState("");
     const navigate = useNavigate();
+
+    const [newBlog, setNewBlog] = useState({})
+    const [newBlogErrors, setNewBlogErrors] = useState({
+        'title': '',
+        'context': '',
+        'detail': ''
+    })
+    const [created, setCreated] = useState(false)
+
+    const {authStatus, UserDetails} = useAuthStatus()
 
     useEffect(() => {
         getBlogs();
@@ -143,6 +156,45 @@ export default function Blogs() {
                     </ul>
                 </nav>
             </div>
+            {(authStatus && UserDetails.is_verified) ? (
+                    created ? (
+                        <div className='alert alert-success'>
+                            <p>
+                            your blog has been sent successfully but it needs to get published by admin,
+                                its usually take around 1 hour to 1 eternity, thanks for your patient
+                            </p>
+
+
+                        </div>
+                        ) : (
+                <div className='add_comment border'>
+                    <form onSubmit={handleSubmit}>
+                        <div className='p-1 m-1'>
+                            <label htmlFor="title">title</label>
+                            {newBlogErrors['title'][0] ? (
+                                <ul className='p-1 alert alert-danger small'>
+                                    {newBlogErrors['title'].map(e => <li>{e}</li>)}
+                                </ul>
+                            ) : null}
+                            <input type="text" onChange={handleInputs} id='title' name='title'
+                                   className='input-group form-control text-bg-secondary'/>
+                        </div>
+                        <div className='p-1 m-1'>
+                            <label htmlFor="context">Context</label>
+                            {newBlogErrors['context'][0] ? (
+                                <ul className='p-1 alert alert-danger small'>
+                                    {newBlogErrors['context'].map(e => <li>{e}</li>)}
+                                </ul>
+                            ) : null}
+                            <textarea onChange={handleInputs} style={{'resize': "none"}}
+                                      className='form-control text-bg-secondary' name='context' rows={15}/>
+                        </div>
+                        <button type='submit' className='btn btn-outline-primary'>Send</button>
+                    </form>
+                </div>
+                        )
+            ) : <h6 className='text text-black-50 small text-center'>you need to login with a verified account then you
+                can add new blog</h6>}
         </>
     )
 
@@ -170,5 +222,40 @@ export default function Blogs() {
     function handleCreatedDateGtChange(event) {
         const selectedDate = event.target.value;
         setCreatedDateGt(selectedDate);
+    }
+
+    function handleInputs(e) {
+        const myInput = e.currentTarget
+        const new_blog = {...newBlog}
+        new_blog[myInput.name] = myInput.value
+        setNewBlog(new_blog)
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault()
+        let data = JSON.stringify(newBlog)
+        let headers = {
+            'Authorization': `Bearer ${Cookies.get('Access_token')}`,
+            "Content-Type": "application/json"
+        }
+
+        try {
+
+            let response = await axios.post(`${baseurl}blog/api/v1/blog/`, data, {headers: headers})
+            if (response.status === 201) {
+                setCreated(true)
+                setNewBlogErrors({
+                    'title': '',
+                    'context': '',
+                    'detail': ''
+                })
+            }
+        } catch (e) {
+            setNewBlogErrors({
+                'title': e.response.data['title'] || '',
+                'context': e.response.data['context'] || '',
+                'detail': e.response.data['detail'] || '',
+            })
+        }
     }
 }

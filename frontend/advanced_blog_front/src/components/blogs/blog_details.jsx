@@ -25,10 +25,10 @@ export default function BlogDetails() {
 
     const [newComment, setNewComment] = useState({})
     const [sendCommentAllowed, sendSentCommentAllowed] = useState(authStatus)
-    const [newCommentErrors, setNewCommentErrors] = useState(({
+    const [newCommentErrors, setNewCommentErrors] = useState({
         'title': '',
         'comment': '',
-    }))
+    })
 
     useEffect(() => getBlog(id), [])
     return (
@@ -128,7 +128,7 @@ export default function BlogDetails() {
                             </ul>
                         ) : null}
                         <textarea onChange={handleInputs} maxLength={512} name='comment' className="form-control text-bg-secondary"
-                                  id="comment" rows="5"></textarea>
+                                  id="comment" rows="5"/>
                     </div>
                     <button type='submit' className='btn btn-info '>Send</button>
                 </form>) : <h6 onClick={() => {
@@ -144,8 +144,6 @@ export default function BlogDetails() {
         const new_comment = {...newComment}
         new_comment[myInputs.name] = myInputs.value
         setNewComment(new_comment)
-        console.log(newCommentErrors)
-
     }
 
     function handlePostNewComment(e) {

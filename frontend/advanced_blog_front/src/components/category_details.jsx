@@ -5,7 +5,6 @@ import '../styles/category_detail.css'
 import {useAuthStatus} from "../contexts/auth_status.jsx";
 import BaseUrl from "../contexts/url_context.jsx";
 import Cookies from "js-cookie";
-import login from "./auth/login.jsx";
 
 export default function CategoryDetails() {
     const navigate = useNavigate()
