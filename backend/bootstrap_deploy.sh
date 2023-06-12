@@ -1,3 +1,4 @@
 python manage.py makemigrations
 python manage.py migrate
-gunicorn core.wsgi --bind 0.0.0.0:8000 --access-logfile -  --error-logfile -
+python manage.py collectstatic
+gunicorn core.wsgi --bind 0.0.0.0:8002 --access-logfile -  --error-logfile -

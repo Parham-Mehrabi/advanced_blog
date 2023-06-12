@@ -19,14 +19,14 @@ services:
     container_name: django
     build: .
     expose:
-      - '8000'
+      - '8002'
     env_file:
       - ./env_variables.env
       - ./db.env
       - ./deploy.env
     volumes:
       - ./backend:/app
-      - static-volume:/app/static_files
+      - blog-static-volume:/app/static_files
 
     depends_on:
       - psql
@@ -49,9 +49,9 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./nginx_configs:/etc/nginx/conf.d
-      - media-volume:/home/app/media
-      - static-volume:/home/app/static
+      - ./nginx:/etc/nginx/conf.d
+      - blog-media-volume:/home/app/media
+      - blog-static-volume:/home/app/static
 
   beat:
     container_name: celery-beat
@@ -83,5 +83,5 @@ services:
       - ./deploy.env
 
 volumes:
-  media-volume:
-  static-volume:
+  blog-media-volume:
+  blog-static-volume:

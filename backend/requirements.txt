@@ -4,7 +4,7 @@ Pillow==9.5.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 django-filter==23.2
-
+setuptools
 #db:
 psycopg2
 

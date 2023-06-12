@@ -1,4 +1,4 @@
-name: PyTest and flake8
+name: test and deploy
 
 on:
   push:
@@ -25,3 +25,22 @@ jobs:
     - name : test pytest
       run: docker compose exec backend sh -c "pytest -v ."
 
+  deploy:
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    name: deploy
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v3
+        - name: connect and execute commands
+          uses: appleboy/ssh-action@master
+          with:
+            username: ${{ secrets.USERNAME }}
+            password: ${{ secrets.PASSWORD }}
+            host: ${{ secrets.HOST }}
+            port:  ${{ secrets.PORT }}
+            script: |
+              cd ${{ secrets.PROJECT_PATH }}
+              docker compose -f ./docker-compose-stage.yml stop
+              git pull
+              docker compose -f ./docker-compose-stage.yml restart
