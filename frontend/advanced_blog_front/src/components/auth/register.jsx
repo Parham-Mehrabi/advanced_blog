@@ -9,6 +9,7 @@ export default function Register() {
     const register_url = baseurl + 'account/api/v1/register/'
     const {authStatus} = useAuthStatus()
     const navigate = useNavigate()
+    const [resent, setResent] = useState(false)
     const [errors, setErrors] = useState({
         'email': '',
         'password': '',
@@ -26,9 +27,10 @@ export default function Register() {
                     <h4 className="alert-heading">Well done!</h4>
                     <p>your account and profile created successfully but you need to verify your account from your email</p>
                     <hr/>
-                        <Link to='/verify'
-                            className="mb-0">click here to resend email if you didnt get one</Link>
-                {/*    TODO: fix this*/}
+                    {!resent ? (
+                        <button onClick={resendEmail}
+                            className="mb-0">click here to resend email if you didnt get one</button>
+                    ):null}
                 </div>
             </>) : (
             <div
@@ -160,6 +162,18 @@ export default function Register() {
                 })
                 setIsLoading(false)
             }
+        }
+    }
+    async function resendEmail(){
+        const data = JSON.stringify({'email': user['email']})
+        const resp = await fetch(`${BaseUrl}account/api/verify/resend`,
+            {
+                method:'POST',
+                body: data
+            })
+
+        if (resp.status === 200){
+            setResent(true)
         }
     }
 

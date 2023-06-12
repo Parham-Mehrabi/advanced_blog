@@ -1,9 +1,11 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import BaseUrl from "../contexts/url_context.jsx";
 
 
 export default function Category() {
+    const base_url = useContext(BaseUrl)
     const [Categories, setCategories] = useState([])
     const [CurrentPage, setCurrentPage] = useState(1)
     const [TotalPage, setTotalPage] = useState()
@@ -12,6 +14,9 @@ export default function Category() {
 
     return (
         <>
+            <div className='train3'>
+                <p>backend provide full control over categories but im too lazy to create UI for it <small onClick={()=>navigate('/swagger')}>(check the swagger to see all endpoints)</small></p>
+            </div>
             <Outlet/>
             <div className='border border-info border-opacity-50 m-1'>
                 <div className='table-responsive'>
@@ -71,16 +76,10 @@ export default function Category() {
     )
 
     function getCategories(page = 1) {
-        fetch(`http://0.0.0.0:8000/blog/api/v1/category/?page=${page}`).then(resp => resp.json()).then((data) => {
+        fetch(`${base_url}blog/api/v1/category/?page=${page}`).then(resp => resp.json()).then((data) => {
             setCategories(data.results)
             setTotalPage(data.total_pages)
             setCurrentPage(page)
         });
     }
-    function handleDetails(navigation, id){
-        console.log('test')
-
-        navigation('id')
-    }
 }
-// TODO: add create option for staff in the bottom of the page

@@ -1,0 +1,87 @@
+version: '3.9'
+
+
+services:
+
+
+  psql:
+    container_name: blog_psql
+    image: postgres:15-alpine3.18
+    env_file:
+      - ./db.env
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+      - ./secret.sql:/docker-entrypoint-initdb.d/init.sql
+    expose:
+      - 5432:5432
+
+  backend:
+    container_name: django
+    build: .
+    expose:
+      - '8000'
+    env_file:
+      - ./env_variables.env
+      - ./db.env
+      - ./deploy.env
+    volumes:
+      - ./backend:/app
+      - static-volume:/app/static_files
+
+    depends_on:
+      - psql
+    command: sh ./bootstrap_deploy.sh
+
+  redis:
+    container_name: blog-redis
+    image: redis
+    ports:
+      - '6369:6379'
+    restart: always
+    command: 'redis-server --save --loglevel warning'
+
+
+  nginx:
+    image: nginx
+    ports:
+      - '82:80'
+    restart: always
+    depends_on:
+      - backend
+    volumes:
+      - ./nginx_configs:/etc/nginx/conf.d
+      - media-volume:/home/app/media
+      - static-volume:/home/app/static
+
+  beat:
+    container_name: celery-beat
+    build: .
+    command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    restart: always
+    depends_on:
+      - backend
+      - redis
+      - psql
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./db.env
+      - ./deploy.env
+
+  worker:
+    container_name: celery-worker
+    build: .
+    command: celery -A core worker -l INFO
+    depends_on:
+      - backend
+      - redis
+      - psql
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./db.env
+      - ./deploy.env
+
+volumes:
+  media-volume:
+  static-volume:

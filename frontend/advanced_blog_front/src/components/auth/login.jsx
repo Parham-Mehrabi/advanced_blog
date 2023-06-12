@@ -38,15 +38,15 @@ export default function login() {
                 })
                 setIsLoading(false)
                 console.log(resp.data)
-            const data = resp.data
-            const expireAccess = new Date();
-            const expireRefresh = new Date();
-            expireAccess.setTime(expireAccess.getTime() + 5 * 60 * 1000);
-            expireRefresh.setDate(expireRefresh.getDate() + 1);
-            Cookies.set('Access_token', data['access'], {expires: expireAccess});
-            Cookies.set('Refresh_token', data['refresh'], {expires: expireRefresh});
-            updateAuthStatus(true)
-            updateUserDetails(user)
+                const data = resp.data
+                const expireAccess = new Date();
+                const expireRefresh = new Date();
+                expireAccess.setTime(expireAccess.getTime() + 5 * 60 * 1000);
+                expireRefresh.setDate(expireRefresh.getDate() + 1);
+                Cookies.set('Access_token', data['access'], {expires: expireAccess});
+                Cookies.set('Refresh_token', data['refresh'], {expires: expireRefresh});
+                updateAuthStatus(true)
+                updateUserDetails(user)
             }
         } catch (error) {
             if (error.response && error.response.status) {
@@ -58,8 +58,9 @@ export default function login() {
                 setErrors({
                     'email': error.response.data['email'] || '',
                     'password': error.response.data['password'] || '',
-                    'detail': error.response.data['details'] || '',
+                    'detail': error.response.data['detail'] || '',
                 })
+                console.log(errors)
                 setIsLoading(false)
             } else if (error.message === 'Network Error') {
                 alert('network error :O')
@@ -73,33 +74,50 @@ export default function login() {
         }
     }
 
-function handleInputs(e) {
-    const myInputs = e.currentTarget
-    const myUser = {...user}
-    myUser[myInputs.name] = myInputs.value
-    setUser(myUser)
-}
+    function handleInputs(e) {
+        const myInputs = e.currentTarget
+        const myUser = {...user}
+        myUser[myInputs.name] = myInputs.value
+        setUser(myUser)
+    }
 
 
-return (
-    // TODO: handle errors in jsx
-    authStatus ? (navigate('/')) : (
-        <div className='d-flex justify-content-center flex-column w-75 content-center justify-center m-auto'>
-            <form onSubmit={performLogin}>
-                <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                    <input type="email" className="form-control" name='email'
-                           id="exampleInputEmail1" onChange={handleInputs}/>
+    return (
+        authStatus ? (navigate('/')) : (
+            <div className='d-flex justify-content-center flex-column w-75 content-center justify-center m-auto'>
+                <form onSubmit={performLogin}>
+                    <div>
 
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                    <input type="password" className="form-control" name='password'
-                           id="exampleInputPassword1" onChange={handleInputs}/>
-                </div>
-                <button type="submit" className="btn btn-outline-info">Login</button>
-            </form>
-            <small>dont have an account? <span><Link replace to='/register'>register here</Link></span></small>
-        </div>)
-)
+                    {errors['detail'][0] ? (
+                        <div className='small alert alert-danger p-1 pt-3 text-center'>
+                            <p>{errors['detail']}</p>
+                        </div>
+                    ) : null}
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                        {errors['email'][0] ? (
+                            <ul className='small alert alert-danger p-1 '>
+                                {errors['email'].map(er => <li>{er}</li>)}
+                            </ul>
+                        ) : null}
+                        <input type="email" className="form-control" name='email'
+                               id="exampleInputEmail1" onChange={handleInputs}/>
+
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                        {errors['password'][0] ? (
+                            <ul className='small alert alert-danger p-1 '>
+                                {errors['password'].map(er => <li>{er}</li>)}
+                            </ul>
+                        ) : null}
+                        <input type="password" className="form-control" name='password'
+                               id="exampleInputPassword1" onChange={handleInputs}/>
+                    </div>
+                    <button type="submit" className="btn btn-outline-info">Login</button>
+                </form>
+                <small>dont have an account? <span><Link replace to='/register'>register here</Link></span></small>
+            </div>)
+    )
 }

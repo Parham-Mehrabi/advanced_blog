@@ -17,13 +17,12 @@ import BlogDetails from './components/blogs/blog_details.jsx'
 const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path={'/'} element={
-                <BaseUrl.Provider value={'http://0.0.0.0:8000/'}>
+                <BaseUrl.Provider value={'http://0.0.0.0:8000/back/'}>
                     <AuthStatusProvider>
                         <App/>
                     </AuthStatusProvider>
                 </BaseUrl.Provider>
             }>
-
                 <Route index element={<Home/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/logout' element={<LogOut/>}/>

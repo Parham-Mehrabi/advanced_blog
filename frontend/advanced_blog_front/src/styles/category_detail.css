@@ -3,3 +3,29 @@
     --bs-btn-font-size: 0.675rem;
     --bs-btn-border-radius: 0.25rem;
 }
+
+.train3 {
+    overflow: hidden;
+    width: 100%;
+    padding-top: 10px;
+    font-size: 18px;
+    color: #5b024d;
+}
+
+.train3 p {
+    white-space: nowrap;
+    animation: last_train 15s linear infinite;
+}
+
+@keyframes last_train {
+    0%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
+}
+
+.train3 small {
+    color: red;
+}

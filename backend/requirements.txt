@@ -11,6 +11,8 @@ psycopg2
 # mail
 django-mail-templated==2.6.5
 
+# deploy:
+gunicorn
 
 # background process:
 celery==5.2.7

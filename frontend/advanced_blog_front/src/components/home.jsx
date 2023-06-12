@@ -42,9 +42,8 @@ export default function Home() {
                                     use swagger/schema.yml to export end points to postman
                                 </small>
                                 <div className={'d-flex justify-content-between mt-auto'}>
-                                    <a href="https://google.com" className="btn btn-primary">swagger</a>
-                                    <a href="https://google.com" className="btn btn-primary">redoc</a>
-                                    {/* TODO: fix the links */}
+                                    <a href="/swagger" className="btn btn-primary">swagger</a>
+                                    <a href="/redoc" className="btn btn-primary">redoc</a>
                                 </div>
                             </div>
                         </div>
@@ -109,4 +108,3 @@ export default function Home() {
         </>
     )
 }
-// TODO: make bootstrap cols responsive in different sizes
