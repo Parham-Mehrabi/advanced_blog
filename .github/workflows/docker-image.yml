@@ -20,11 +20,11 @@ jobs:
         echo "${{ secrets.DB_ENV }}" > db.env
         echo "${{ secrets.SECRET_KEY }}" > secret_key.env
         echo "${{ secrets.SECRET_SQL }}" > secret.sql
-        docker compose up --build -d
+        docker compose -f ./docker-compose-deploy.yml up --build -d
     - name: test flake8
-      run: docker compose exec backend sh -c "flake8 ."
+      run: docker compose -f ./docker-compose-deploy.yml exec backend sh -c "flake8 ."
     - name : test pytest
-      run: docker compose exec backend sh -c "pytest -v ."
+      run: docker compose -f ./docker-compose-deploy.yml exec backend sh -c "pytest -v ."
 
   deploy:
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}

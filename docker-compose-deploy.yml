@@ -33,7 +33,7 @@ services:
       - psql
     command: sh ./bootstrap_deploy.sh
 
-  bredis:
+  redis:
     container_name: blog-redis
     image: redis
     ports:
@@ -62,7 +62,7 @@ services:
     restart: always
     depends_on:
       - backend
-      - bredis
+      - redis
       - psql
     volumes:
       - ./backend:/app
@@ -76,7 +76,7 @@ services:
     command: celery -A core worker -l INFO
     depends_on:
       - backend
-      - bredis
+      - redis
       - psql
     volumes:
       - ./backend:/app
