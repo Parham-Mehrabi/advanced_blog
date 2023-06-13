@@ -17,7 +17,7 @@ import BlogDetails from './components/blogs/blog_details.jsx'
 const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path={'/'} element={
-                <BaseUrl.Provider value={'http://0.0.0.0:8000/back/'}>
+                <BaseUrl.Provider value={'/back/'}>
                     <AuthStatusProvider>
                         <App/>
                     </AuthStatusProvider>
