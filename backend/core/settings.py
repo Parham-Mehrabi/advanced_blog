@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-8cj^$(+fay(r!18g!^*p@c0vc@-f!4q9q^jwilkqlq=n9rbdn6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://blog.parham-webdev.com']
 
 # TODO: change it to my domain
 
@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
+        "LOCATION": "redis://redis:6370/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -164,7 +164,7 @@ CACHES = {
 }
 
 # celery:
-CELERY_BROKER_URL = 'redis://redis:6379/2'
+CELERY_BROKER_URL = 'redis://redis:6370/2'
 
 CELERY_BEAT_SCHEDULE = {
     'delete_completed_tasks': {
