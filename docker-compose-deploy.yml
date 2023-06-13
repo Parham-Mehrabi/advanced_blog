@@ -67,6 +67,7 @@ services:
     volumes:
       - ./backend:/app
     env_file:
+      - secret_key.env
       - ./db.env
       - ./deploy.env
 
@@ -83,6 +84,7 @@ services:
     env_file:
       - ./db.env
       - ./deploy.env
+      - secret_key.env
 
 volumes:
   blog-media-volume:
