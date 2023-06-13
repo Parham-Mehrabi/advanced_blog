@@ -4,7 +4,7 @@ version: '3.9'
 services:
 
 
-  blog_psql:
+  psql:
     container_name: blog_psql
     image: postgres:15-alpine3.18
     env_file:
@@ -15,7 +15,7 @@ services:
     expose:
       - 5432:5432
 
-  blog_backend:
+  backend:
     container_name: blog_django
     build: .
     expose:
@@ -29,10 +29,10 @@ services:
       - blog-static-volume:/app/static_files
 
     depends_on:
-      - blog_psql
+      - psql
     command: sh ./bootstrap_deploy.sh
 
-  blog_redis:
+  redis:
     container_name: blog-redis
     image: redis
     ports:
@@ -41,42 +41,41 @@ services:
     command: 'redis-server --save --loglevel warning'
 
 
-  blog_nginx:
-    container_name: blog_nginc
-    image: nginx
+  nginx:
+    image: blog_nginx
     ports:
       - '82:80'
     restart: always
     depends_on:
-      - blog_backend
+      - backend
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - blog-media-volume:/home/app/media
       - blog-static-volume:/home/app/static
 
-  blog_beat:
+  beat:
     container_name: blog_celery-beat
     build: .
     command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     restart: always
     depends_on:
-      - blog_blog_backend
-      - blog_blog_redis
-      - blog_blog_psql
+      - backend
+      - redis
+      - psql
     volumes:
       - ./backend:/app
     env_file:
       - ./db.env
       - ./deploy.env
 
-  blog_worker:
+  worker:
     container_name: blog_celery-worker
     build: .
     command: celery -A core worker -l INFO
     depends_on:
-      - blog_backend
-      - blog_redis
-      - blog_psql
+      - backend
+      - redis
+      - psql
     volumes:
       - ./backend:/app
     env_file:
