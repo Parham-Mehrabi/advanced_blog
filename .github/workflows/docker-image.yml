@@ -18,6 +18,7 @@ jobs:
       run: |
         echo "${{ secrets.ENV_VARIABLES }}" > env_variables.env
         echo "${{ secrets.DB_ENV }}" > db.env
+        echo "${{ secrets.SECRET_KEY }}" > secret_key.env
         echo "${{ secrets.SECRET_SQL }}" > secret.sql
         docker compose up --build -d
     - name: test flake8

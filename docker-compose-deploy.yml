@@ -24,6 +24,7 @@ services:
       - ./env_variables.env
       - ./db.env
       - ./deploy.env
+      - ./secret_key.env
     volumes:
       - ./backend:/app
       - blog-static-volume:/app/static_files
@@ -32,7 +33,7 @@ services:
       - psql
     command: sh ./bootstrap_deploy.sh
 
-  redis:
+  bredis:
     container_name: blog-redis
     image: redis
     ports:
@@ -42,7 +43,8 @@ services:
 
 
   nginx:
-    image: blog_nginx
+    container_name: blog_nginx
+    image: nginx
     ports:
       - '82:80'
     restart: always
@@ -60,7 +62,7 @@ services:
     restart: always
     depends_on:
       - backend
-      - redis
+      - bredis
       - psql
     volumes:
       - ./backend:/app
@@ -74,7 +76,7 @@ services:
     command: celery -A core worker -l INFO
     depends_on:
       - backend
-      - redis
+      - bredis
       - psql
     volumes:
       - ./backend:/app
