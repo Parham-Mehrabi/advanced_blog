@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # TODO: USE ENV VARIABLE FOR THIS
 
 # SECURITY WARNING: don't run with debug turned on in production!
-os.getenv('DEBUG', True)
+DEBUG = os.getenv('DEBUG', True)
 
 ALLOWED_HOSTS = ['blog.parham-webdev.com']
 
