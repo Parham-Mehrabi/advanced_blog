@@ -14,8 +14,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # TODO: USE ENV VARIABLE FOR THIS
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', True)
-
+debug = os.getenv('DEBUG', False)
+if debug == 'TRUE':
+    DEBUG = True
+else:
+    DEBUG = False
 ALLOWED_HOSTS = ['blog.parham-webdev.com']
 
 # TODO: change it to my domain
