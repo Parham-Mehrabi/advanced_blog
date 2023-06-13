@@ -18,6 +18,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# TODO: change it to my domain
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,11 +45,6 @@ INSTALLED_APPS = [
     'account',
     'blog',
     'comment',
-]
-
-# TODO REMOVE CORS CONFIG:
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"(.*)",
 ]
 
 MIDDLEWARE = [
@@ -90,7 +87,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django',
-        'HOST': 'psql',
+        'HOST': 'blog_psql',
         'PORT': '5432',
         'USER': 'parham',
         'PASSWORD': os.getenv('PARHAM_PASSWORD'),
@@ -159,7 +156,7 @@ REST_FRAMEWORK = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
+        "LOCATION": "redis://blog_redis:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -167,7 +164,7 @@ CACHES = {
 }
 
 # celery:
-CELERY_BROKER_URL = 'redis://redis:6379/2'
+CELERY_BROKER_URL = 'redis://blog_redis:6379/2'
 
 CELERY_BEAT_SCHEDULE = {
     'delete_completed_tasks': {
