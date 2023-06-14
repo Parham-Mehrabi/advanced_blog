@@ -201,4 +201,5 @@ SIMPLE_JWT = {
     'TOKEN_VERIFY_SERIALIZER': 'account.api.serializers.VerifyTokenSerializer',
 }
 
-
+# CSRF
+CSRF_TRUSTED_ORIGINS = ["https://parham-webdev.com", "https://www.parham-webdev.com", 'https://*.parham-webdev.com']
