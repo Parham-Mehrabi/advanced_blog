@@ -11,7 +11,7 @@ password reset
 <h3>parham-webdev.com</h3>
 <p>to reset your password click the link below and declare a new password</p>
 <h4>
-    <a href="http://127.0.0.1:8000/account/api/v1/password/reset/confirm/{{ token }}"
+    <a href="https://blog.parham-webdev.com/back/account/api/v1/password/reset/confirm/{{ token }}"
        style="background-color:rgba(255,100,100,0.49); text-decoration: None; color: blue;padding: 5px;border-radius: 5px; margin: 1px">go
         to RESET PASSWORD</a>
     <br>

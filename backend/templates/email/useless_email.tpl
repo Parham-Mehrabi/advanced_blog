@@ -11,6 +11,7 @@ Email Verify
     to complete your registration click the link below to verify your email address
     <small>i didnt create a delete account functionality to my app yet, <strong> so email me for delete account(or active it)</strong></small>
     <small>parham.merhabi.webdev@gmail.com</small>
+    <p>this is a random email just to test crontab take it easy</p>
 </h4>
 <hr>
 <img src="https://http.cat/200" width="400px" height="300px">
