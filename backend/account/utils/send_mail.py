@@ -21,7 +21,7 @@ def send_password_reset_token(email, user, token):
             "email/password_reset.tpl",
             {"token": token,
              "user": user},
-            'mail.parham-webdev.com',
+            from_email='parham.webdev@parham-webdev.com',
             to=[email],
         )
         email_obj.send()
@@ -41,7 +41,7 @@ def send_email_verification(email, token):
         email_obj = EmailMessage(
             "email/verify_email.tpl",
             {"token": token},
-            'mail.parham-webdev.com',
+            from_email='parham.webdev@parham-webdev.com',
             to=[email],
         )
         email_obj.send()
