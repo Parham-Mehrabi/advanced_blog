@@ -15,6 +15,8 @@ services:
     expose:
       - 5432:5432
 
+    networks:
+      - blog_network
   backend:
     container_name: blog_django
     build: .
@@ -33,6 +35,9 @@ services:
       - psql
     command: sh ./bootstrap_deploy.sh
 
+    networks:
+      - blog_network
+
   redis:
     container_name: blog-redis
     image: redis
@@ -40,6 +45,8 @@ services:
       - '6370:6379'
     restart: always
     command: 'redis-server --save --loglevel warning'
+    networks:
+      - blog_network
 
 
   nginx:
@@ -54,6 +61,8 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - blog-media-volume:/home/app/media
       - blog-static-volume:/home/app/static
+    networks:
+      - blog_network
 
   beat:
     container_name: blog_celery-beat
@@ -72,6 +81,9 @@ services:
       - ./deploy.env
       - env_variables.env
 
+    networks:
+      - blog_network
+
   worker:
     container_name: blog_celery-worker
     build: .
@@ -88,6 +100,14 @@ services:
       - secret_key.env
       - env_variables.env
 
+    networks:
+      - blog_network
+
 volumes:
   blog-media-volume:
   blog-static-volume:
+
+
+networks:
+  blog_network:
+    driver: bridge
