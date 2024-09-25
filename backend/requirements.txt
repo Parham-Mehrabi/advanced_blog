@@ -40,3 +40,4 @@ Faker==18.9.0
 
 # Development (TEST WITH REACT DEV SERVER)
 django-cors-headers
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
